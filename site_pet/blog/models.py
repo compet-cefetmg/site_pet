@@ -1,8 +1,15 @@
 from django.db import models
 import os, datetime
-from django.views.generic import TemplateView
+from django.conf import settings
 
 def get_image_path(instance, filename):
+    # If publication is being created, saves image into temporary folder
+    # Else, removes previous image and saves the new one
+    if instance.id is not None:
+        path = os.path.join(settings.MEDIA_ROOT, 'blog/thumbnails', str(instance.id))
+        if os.path.isfile(path):
+            os.remove(path)
+        return os.path.join('blog/thumbnails', str(instance.id))
     return os.path.join('blog/thumbnails', datetime.datetime.now().strftime('%Y%m%d%H%M%S'), filename)
 
 class Publication(models.Model):

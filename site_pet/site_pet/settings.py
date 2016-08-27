@@ -9,6 +9,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
+    'members',
     'django_summernote',
     'django.contrib.admin',
     'django.contrib.auth',

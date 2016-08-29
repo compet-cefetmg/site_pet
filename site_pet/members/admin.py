@@ -1,10 +1,8 @@
 from django.contrib import admin
-from members.models import Member,MyMember
+from members.models import Member, MyMember
 from django.core.exceptions import ValidationError
-from django.contrib import messages
-from django import forms
 from django.conf import settings
-from shutil import copy2, rmtree, copyfile
+from shutil import rmtree
 import os
 
 class MembersAdmin(admin.ModelAdmin):

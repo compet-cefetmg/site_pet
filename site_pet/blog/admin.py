@@ -2,9 +2,8 @@ from django.contrib import admin
 from blog.models import Publication, MyPublication
 from django_summernote.admin import SummernoteModelAdmin
 from django.core.exceptions import ValidationError
-from django.contrib import messages
 from django import forms
-from shutil import copy2, rmtree, copyfile
+from shutil import rmtree
 import os
 
 # class PublicationForm(forms.ModelForm):

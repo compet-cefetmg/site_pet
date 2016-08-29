@@ -1,6 +1,7 @@
 from django.db import models
 import os, datetime
 from django.conf import settings
+from members.models import Member
 
 def get_image_path(instance, filename):
     # If publication is being created, saves image into temporary folder
@@ -21,6 +22,7 @@ class Publication(models.Model):
     thumbnail = models.ImageField(upload_to=get_image_path)
     publish_date = models.DateField(auto_now=False, auto_now_add=True)
     last_modification = models.DateField(auto_now=True, auto_now_add=False)
+    member = models.ForeignKey(Member,verbose_name="Author",on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.title

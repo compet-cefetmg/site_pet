@@ -13,13 +13,27 @@ def get_image_path(instance, filename):
     return os.path.join('members/photos', datetime.datetime.now().strftime('%Y%m%d%H%M%S'), filename)
 
 class Member(models.Model):
+	MEMBER = 'MB'
+	EX_MEMBER = 'EM'
+	CHIEF = 'TT'
+	VOLUNTARY = 'VT'
+	STATUS_CHOICES = (
+		(MEMBER, 'Membro'),
+		(EX_MEMBER, 'Ex-Membro'),
+		(CHIEF, 'Tutor'),
+		(VOLUNTARY, 'Voluntário'),
+	)
 	name = models.CharField(max_length=255)
 	photo = models.ImageField(upload_to=get_image_path)
-	facebook_link = models.TextField(default='none')
-	lattes_link = models.TextField(default='none')
+	facebook_link = models.CharField(default='none',max_length=255)
+	lattes_link = models.CharField(default='none',max_length=255)
 	user = models.CharField(max_length=255,editable=False)
 	email = models.EmailField(max_length=255)
-	status = models.CharField(max_length=255)
+	status = models.CharField(
+		max_length=2,
+		choices=STATUS_CHOICES,
+		default=MEMBER,
+    )
 
 	def __str__(self):
 		return self.name

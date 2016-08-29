@@ -3,6 +3,7 @@ from members.models import Member,MyMember
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django import forms
+from django.conf import settings
 from shutil import copy2, rmtree, copyfile
 import os
 
@@ -26,7 +27,7 @@ class MembersAdmin(admin.ModelAdmin):
             obj.save()
 
     def delete_model(self, request, obj):
-        photo_path = obj.photo.file.name
+        photo_path = os.path.join(settings.MEDIA_ROOT, obj.photo.file.name)
         obj.delete()
         os.remove(photo_path)
 

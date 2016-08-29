@@ -25,8 +25,8 @@ class Member(models.Model):
 	)
 	name = models.CharField(max_length=255)
 	photo = models.ImageField(upload_to=get_image_path)
-	facebook_link = models.CharField(default='none',max_length=255)
-	lattes_link = models.CharField(default='none',max_length=255)
+	facebook_link = models.CharField(max_length=255, blank=True)
+	lattes_link = models.CharField(max_length=255, blank=True)
 	user = models.CharField(max_length=255,editable=False)
 	email = models.EmailField(max_length=255)
 	status = models.CharField(

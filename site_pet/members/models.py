@@ -15,12 +15,12 @@ def get_image_path(instance, filename):
 class Member(models.Model):
 	MEMBER = 'MB'
 	EX_MEMBER = 'EM'
-	CHIEF = 'TT'
+	TUTOR = 'TT'
 	VOLUNTARY = 'VT'
 	STATUS_CHOICES = (
 		(MEMBER, 'Membro'),
 		(EX_MEMBER, 'Ex-Membro'),
-		(CHIEF, 'Tutor'),
+		(TUTOR, 'Tutor'),
 		(VOLUNTARY, 'Voluntário'),
 	)
 	name = models.CharField(max_length=255)

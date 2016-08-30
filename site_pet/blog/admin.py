@@ -6,15 +6,6 @@ from django import forms
 from shutil import rmtree
 import os
 
-# class PublicationForm(forms.ModelForm):
-#     class Meta:
-#         model = Publication
-#         fields = '__all__'
-
-#     def clean(self):
-#         import pdb; pdb.set_trace()
-#         return self.cleaned_data
-
 class PublicationAdmin(SummernoteModelAdmin):
     def get_queryset(self, request):
         return Publication.objects.all()

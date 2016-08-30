@@ -15,14 +15,13 @@ def get_image_path(instance, filename):
 
 class Publication(models.Model):
     title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
+    author = models.ForeignKey(Member, verbose_name="author", on_delete=models.CASCADE)
     user = models.CharField(max_length=255, editable=False)
     text_call = models.CharField(max_length=255)
     text_content = models.TextField()
     thumbnail = models.ImageField(upload_to=get_image_path)
     publish_date = models.DateField(auto_now=False, auto_now_add=True)
     last_modification = models.DateField(auto_now=True, auto_now_add=False)
-    member = models.ForeignKey(Member,verbose_name="Author",on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.title

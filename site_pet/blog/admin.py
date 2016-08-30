@@ -2,6 +2,7 @@ from django.contrib import admin
 from blog.models import Publication, MyPublication
 from django_summernote.admin import SummernoteModelAdmin
 from django.core.exceptions import ValidationError
+from members.models import Member
 from django import forms
 from shutil import rmtree
 import os
@@ -33,6 +34,11 @@ class PublicationAdmin(SummernoteModelAdmin):
 class MyPublicationAdmin(PublicationAdmin):
     def get_queryset(self, request):
         return MyPublication.objects.filter(user=request.user.get_username())
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'author':
+            kwargs['queryset'] = Member.objects.filter(user=request.user.get_username())
+        return super(MyPublicationAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 admin.site.register(MyPublication, MyPublicationAdmin)

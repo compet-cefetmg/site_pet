@@ -2,19 +2,10 @@ from django.contrib import admin
 from blog.models import Publication, MyPublication
 from django_summernote.admin import SummernoteModelAdmin
 from django.core.exceptions import ValidationError
-from django.contrib import messages
+from members.models import Member
 from django import forms
-from shutil import copy2, rmtree, copyfile
+from shutil import rmtree
 import os
-
-# class PublicationForm(forms.ModelForm):
-#     class Meta:
-#         model = Publication
-#         fields = '__all__'
-
-#     def clean(self):
-#         import pdb; pdb.set_trace()
-#         return self.cleaned_data
 
 class PublicationAdmin(SummernoteModelAdmin):
     def get_queryset(self, request):
@@ -43,6 +34,11 @@ class PublicationAdmin(SummernoteModelAdmin):
 class MyPublicationAdmin(PublicationAdmin):
     def get_queryset(self, request):
         return MyPublication.objects.filter(user=request.user.get_username())
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'author':
+            kwargs['queryset'] = Member.objects.filter(user=request.user.get_username())
+        return super(MyPublicationAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 admin.site.register(MyPublication, MyPublicationAdmin)

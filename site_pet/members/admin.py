@@ -33,7 +33,5 @@ class MyMembersAdmin(MembersAdmin):
     def get_queryset(self, request):
         return MyMember.objects.filter(user=request.user.get_username())
 
-# Register your models here.
-
 admin.site.register(MyMember, MyMembersAdmin)
 admin.site.register(Member, MembersAdmin)

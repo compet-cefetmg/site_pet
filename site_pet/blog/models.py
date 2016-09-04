@@ -4,8 +4,6 @@ from django.conf import settings
 from members.models import Member
 
 def get_image_path(instance, filename):
-    # If publication is being created, saves image into temporary folder
-    # Else, removes previous image and saves the new one
     if instance.id is not None:
         path = os.path.join(settings.MEDIA_ROOT, 'blog/thumbnails', str(instance.id))
         if os.path.isfile(path):

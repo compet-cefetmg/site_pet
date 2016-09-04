@@ -8,8 +8,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'blog.apps.BlogConfig',
+    'blog',
     'members',
+    'pets',
     'django_summernote',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -34,3 +34,8 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.course.__str__()
+
+
+class MyPet(Pet):
+    class Meta:
+        proxy = True

@@ -4,23 +4,18 @@ from django.contrib.auth.models import User
 from cefet.models import *
 from utils.decimal_to_roman import write_roman 
 
-class PetInline(admin.StackedInline):
-    model = Pet
-    can_delete = False
-    verbose_name_plural = 'Pet Info'
-
-
-class UserAdmin(BaseUserAdmin):
-    inlines = (PetInline, )
-
 
 class CampusAdmin(admin.ModelAdmin):
-	def save_model(self, request, obj, form, change):
-		obj.roman_id = write_roman(obj.id)
-		obj.save()
+    def save_model(self, request, obj, form, change):
+        obj.roman_id = write_roman(obj.id)
+        obj.save()
 
 
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
-admin.site.register(Campus, CampusAdmin)
+class MyPetAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        return MyPet.objects.filter(user=request.user)
+
 admin.site.register(Course)
+admin.site.register(Pet)
+admin.site.register(Campus, CampusAdmin)
+admin.site.register(MyPet, MyPetAdmin)

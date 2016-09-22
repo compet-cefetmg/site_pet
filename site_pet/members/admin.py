@@ -1,5 +1,5 @@
 from django.contrib import admin
-from members.models import Member, MyMember
+from members.models import *
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from shutil import rmtree
@@ -35,3 +35,4 @@ class MyMembersAdmin(MembersAdmin):
 
 admin.site.register(MyMember, MyMembersAdmin)
 admin.site.register(Member, MembersAdmin)
+admin.site.register(MemberRole)

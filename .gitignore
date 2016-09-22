@@ -1,3 +1,4 @@
+*migrations/
 static/blog/
 *.DS_Store
 

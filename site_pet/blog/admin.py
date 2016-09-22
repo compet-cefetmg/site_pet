@@ -8,6 +8,8 @@ from shutil import rmtree
 import os
 
 class PublicationAdmin(SummernoteModelAdmin):
+    list_display = ('title', 'author', 'publish_date', 'last_modification')
+
     def get_queryset(self, request):
         return Publication.objects.all()
 

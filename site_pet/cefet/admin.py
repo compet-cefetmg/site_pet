@@ -11,7 +11,16 @@ class CampusAdmin(admin.ModelAdmin):
         obj.save()
 
 
-class MyPetAdmin(admin.ModelAdmin):
+class PetAdmin(admin.ModelAdmin):
+    list_display = ('user', 'course_name', 'course_campus')
+    
+    def course_name(self, obj):
+        return obj.course.name
+
+    def course_campus(self, obj):
+        return obj.course.campus
+
+class MyPetAdmin(PetAdmin):
     fields = ['description']
 
     def get_queryset(self, request):
@@ -19,6 +28,6 @@ class MyPetAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Course)
-admin.site.register(Pet)
 admin.site.register(Campus, CampusAdmin)
+admin.site.register(Pet, PetAdmin)
 admin.site.register(MyPet, MyPetAdmin)

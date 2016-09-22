@@ -6,6 +6,8 @@ from shutil import rmtree
 import os
 
 class MembersAdmin(admin.ModelAdmin):
+    list_display = ('name', 'role', 'email')
+
     def get_queryset(self, request):
         return Member.objects.all()
 

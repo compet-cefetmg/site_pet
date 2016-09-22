@@ -1,6 +1,7 @@
 from django.db import models
 import os, datetime
 from django.conf import settings
+from django.contrib.auth.models import User
 
 
 def get_image_path(instance, filename):
@@ -27,7 +28,7 @@ class Member(models.Model):
 	photo = models.ImageField(upload_to=get_image_path)
 	facebook_link = models.CharField(max_length=255, blank=True)
 	lattes_link = models.CharField(max_length=255, blank=True)
-	user = models.CharField(max_length=255,editable=False)
+	user = models.OneToOneField(User, on_delete=models.PROTECT)
 	email = models.EmailField(max_length=255)
 	status = models.CharField(
 		max_length=2,

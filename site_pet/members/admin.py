@@ -11,7 +11,7 @@ class MembersAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if change is False:
-            obj.user = request.user.get_username()
+            obj.user = request.user
             obj.save()
             photo_path = obj.photo.file.name
             new_photo_path = os.path.join(os.path.dirname(os.path.dirname(photo_path)), str(obj.id))
@@ -31,7 +31,7 @@ class MembersAdmin(admin.ModelAdmin):
 
 class MyMembersAdmin(MembersAdmin):
     def get_queryset(self, request):
-        return MyMember.objects.filter(user=request.user.get_username())
+        return MyMember.objects.filter(user=request.user)
 
 admin.site.register(MyMember, MyMembersAdmin)
 admin.site.register(Member, MembersAdmin)

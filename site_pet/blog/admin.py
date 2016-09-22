@@ -13,7 +13,7 @@ class PublicationAdmin(SummernoteModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if change is False:
-            obj.user = request.user.get_username()
+            obj.user = request.user
             obj.save()
             thumb_path = obj.thumbnail.file.name
             new_thumb_path = os.path.join(os.path.dirname(os.path.dirname(thumb_path)), str(obj.id))
@@ -22,7 +22,7 @@ class PublicationAdmin(SummernoteModelAdmin):
             obj.thumbnail = os.path.join('blog/thumbnails', str(obj.id))            
             obj.save()
         else:
-            if obj.user != request.user.get_username():
+            if obj.user != request.user:
                 raise ValidationError('You can\t edit this')
             obj.save()
 
@@ -33,11 +33,11 @@ class PublicationAdmin(SummernoteModelAdmin):
 
 class MyPublicationAdmin(PublicationAdmin):
     def get_queryset(self, request):
-        return MyPublication.objects.filter(user=request.user.get_username())
+        return MyPublication.objects.filter(user=request.user)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'author':
-            kwargs['queryset'] = Member.objects.filter(user=request.user.get_username())
+            kwargs['queryset'] = Member.objects.filter(user=request.user)
         return super(MyPublicationAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 

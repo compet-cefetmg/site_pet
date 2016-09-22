@@ -1,7 +1,9 @@
 from django.db import models
 import os, datetime
 from django.conf import settings
+from django.contrib.auth.models import User
 from members.models import Member
+
 
 def get_image_path(instance, filename):
     if instance.id is not None:
@@ -13,8 +15,8 @@ def get_image_path(instance, filename):
 
 class Publication(models.Model):
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(Member, on_delete=models.CASCADE)
-    user = models.CharField(max_length=255, editable=False)
+    author = models.ForeignKey(Member, on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, editable=False)
     text_call = models.CharField(max_length=255)
     text_content = models.TextField()
     thumbnail = models.ImageField(upload_to=get_image_path)

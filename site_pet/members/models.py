@@ -25,7 +25,7 @@ class Member(models.Model):
 	photo = models.ImageField(upload_to=get_image_path, blank=True)
 	facebook_link = models.CharField(max_length=255, blank=True)
 	lattes_link = models.CharField(max_length=255, blank=True)
-	user = models.OneToOneField(User, editable=False, on_delete=models.PROTECT)
+	user = models.ForeignKey(User, editable=False, on_delete=models.PROTECT)
 	email = models.EmailField(max_length=255, blank=True)
 	role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members')
 

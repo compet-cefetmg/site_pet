@@ -13,14 +13,15 @@ class MembersAdmin(admin.ModelAdmin):
         if change is False:
             obj.user = request.user
             obj.save()
-            photo_path = obj.photo.file.name
-            new_photo_path = os.path.join(os.path.dirname(os.path.dirname(photo_path)), str(obj.id))
-            os.rename(photo_path,new_photo_path)
-            rmtree(os.path.dirname(photo_path))
-            obj.photo = os.path.join('members/photos', str(obj.id))
+            if obj.photo:
+                photo_path = obj.photo.file.name
+                new_photo_path = os.path.join(os.path.dirname(os.path.dirname(photo_path)), str(obj.id))
+                os.rename(photo_path,new_photo_path)
+                rmtree(os.path.dirname(photo_path))
+                obj.photo = os.path.join('members/photos', str(obj.id))
             obj.save()
         else:
-            if obj.user != request.user.get_username():
+            if obj.user != request.user:
                 raise ValidationError('You can\t edit this')
             obj.save()
 

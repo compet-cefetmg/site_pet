@@ -12,8 +12,11 @@ class CampusAdmin(admin.ModelAdmin):
 
 
 class MyPetAdmin(admin.ModelAdmin):
+    fields = ['description']
+
     def get_queryset(self, request):
         return MyPet.objects.filter(user=request.user)
+
 
 admin.site.register(Course)
 admin.site.register(Pet)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from pets.models import *
+from cefet.models import *
 from utils.decimal_to_roman import write_roman 
 
 class PetInline(admin.StackedInline):

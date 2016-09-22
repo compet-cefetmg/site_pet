@@ -10,7 +10,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'blog',
     'members',
-    'pets',
+    'cefet',
     'django_summernote',
     'django.contrib.admin',
     'django.contrib.auth',

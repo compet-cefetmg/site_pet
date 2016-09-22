@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import pets.models
+import cefet.models
 
 
 class Migration(migrations.Migration):
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             name='Pet',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('photo', models.ImageField(upload_to=pets.models.get_image_path)),
+                ('photo', models.ImageField(upload_to=cefet.models.get_image_path)),
                 ('campus', models.IntegerField()),
                 ('course', models.CharField(max_length=255)),
                 ('start', models.DateField()),

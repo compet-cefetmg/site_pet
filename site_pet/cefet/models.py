@@ -35,7 +35,14 @@ class Pet(models.Model):
     def __str__(self):
         return self.course.__str__()
 
+    class Meta:
+        verbose_name = 'Pet (all)'
+        verbose_name_plural = 'Pets (all)'
+
 
 class MyPet(Pet):
+
     class Meta:
         proxy = True
+        verbose_name = 'Pet description'
+        verbose_name_plural = 'Pet description'

@@ -13,7 +13,7 @@ def get_image_path(instance, filename):
 
 class Publication(models.Model):
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(Member, verbose_name="author", on_delete=models.CASCADE)
+    author = models.ForeignKey(Member, on_delete=models.CASCADE)
     user = models.CharField(max_length=255, editable=False)
     text_call = models.CharField(max_length=255)
     text_content = models.TextField()

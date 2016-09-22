@@ -5,18 +5,6 @@ import os
 import datetime
 
 
-class Pet(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to=get_image_path)
-    campus = models.IntegerField()
-    course = models.CharField(max_length=255)
-    start = models.DateField()
-    description = models.TextField()
-
-    def __str__(self):
-        return self.course + ' (Campus ' + str(self.campus) + ')'
-
-
 class Campus(models.Model):
     class Meta:
         verbose_name_plural = 'campi'
@@ -27,3 +15,22 @@ class Campus(models.Model):
 
     def __str__(self):
         return 'Campus ' + self.roman_id + ' (' + self.location + ')'
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.name +  ' (Campus ' + self.campus.roman_id + ')'
+
+
+class Pet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    photo = models.ImageField(upload_to=get_image_path)
+    course = models.ForeignKey(Course, on_delete=models.PROTECT)
+    start = models.DateField()
+    description = models.TextField()
+
+    def __str__(self):
+        return self.course.__str__()

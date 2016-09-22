@@ -1,22 +1,16 @@
 from django.db import models
-import os, datetime
 from django.conf import settings
+from django.contrib.auth.models import User
 from members.models import Member
+from utils.upload_helper import get_image_path
+import os
+import datetime
 
-def get_image_path(instance, filename):
-    # If publication is being created, saves image into temporary folder
-    # Else, removes previous image and saves the new one
-    if instance.id is not None:
-        path = os.path.join(settings.MEDIA_ROOT, 'blog/thumbnails', str(instance.id))
-        if os.path.isfile(path):
-            os.remove(path)
-        return os.path.join('blog/thumbnails', str(instance.id))
-    return os.path.join('blog/thumbnails', datetime.datetime.now().strftime('%Y%m%d%H%M%S'), filename)
 
 class Publication(models.Model):
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(Member, verbose_name="author", on_delete=models.CASCADE)
-    user = models.CharField(max_length=255, editable=False)
+    author = models.ForeignKey(Member, on_delete=models.PROTECT, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, editable=False)
     text_call = models.CharField(max_length=255)
     text_content = models.TextField()
     thumbnail = models.ImageField(upload_to=get_image_path)
@@ -26,6 +20,12 @@ class Publication(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'Publication (all)'
+        verbose_name_plural = 'Publications (all)'  
+
 class MyPublication(Publication):
     class Meta:
         proxy = True
+        verbose_name = 'Publication'
+        verbose_name_plural = 'Publications'

@@ -1,10 +1,9 @@
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 {% for member in members %}
     <p>{{ member.name }}</p>
 {% endfor %}
-</body>
-</html>
+
+{% endblock %}

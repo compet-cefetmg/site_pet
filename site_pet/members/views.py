@@ -6,7 +6,10 @@ from django.shortcuts import get_list_or_404
 
 
 def index(request, username=""):
-    user = get_list_or_404(User, username=username)
-    members = Member.objects.filter(user=user[0])
-    context = {'members': members }
+    user_query = get_list_or_404(User, username=username)
+    roles = []
+    for role in MemberRole.objects.all():
+        members = role.members.filter(user=user_query[0]).all()
+        roles.append({'role': role.role, 'members': members})
+    context = {'roles': roles }
     return render(request, 'members/index.html', context)

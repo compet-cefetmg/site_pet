@@ -1,9 +1,21 @@
 {% extends "base.html" %}
-
 {% block content %}
-
-{% for member in members %}
-    <p>{{ member.name }}</p>
+<div class="container">
+{% for role in roles %}
+    <div class="row">
+    {% if role.members %}
+        <div class="col-xs-12">
+            <h2>{{ role.role }}</h2>
+        </div>
+        {% for member in role.members %}
+            <div class="col-md-4 col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">{{ member.name }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
 {% endfor %}
-
+</div>
 {% endblock %}

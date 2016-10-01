@@ -14,6 +14,6 @@ def index(request, username=""):
             members = role.members.filter(user=user_query[0]).order_by('name').all()
         else:
             members = role.members.order_by('name').all()
-        roles.append({'role': role.role, 'members': members})
+        roles.append({'role': role.name_plural, 'members': members})
     context = {'roles': roles }
     return render(request, 'members/index.html', context)

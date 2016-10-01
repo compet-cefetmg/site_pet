@@ -7,10 +7,11 @@ import datetime
 
 
 class MemberRole(models.Model):
-    role = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
+    name_plural = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
-        return self.role
+        return self.name
 
 
 class Member(models.Model):

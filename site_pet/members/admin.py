@@ -1,6 +1,6 @@
 from django.contrib import admin
 from members.models import *
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from shutil import rmtree
 import os
@@ -24,7 +24,7 @@ class MembersAdmin(admin.ModelAdmin):
             obj.save()
         else:
             if obj.user != request.user:
-                raise ValidationError('You can\t edit this')
+                raise PermissionDenied
             obj.save()
 
     def delete_model(self, request, obj):

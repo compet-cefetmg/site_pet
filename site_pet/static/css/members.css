@@ -1,0 +1,18 @@
+.panel-body .img-circle {
+    width: 64px;
+    height: 64px;
+}
+.panel-body a {
+    text-decoration: none;
+}
+.panel-body a i.fa {
+    font-size: 18px;
+    margin-right: 8px;
+    margin-left: 8px;
+    color: #3b5998;
+}
+.panel-body a i.fa:hover {
+    color: #32497a;
+}
+
+

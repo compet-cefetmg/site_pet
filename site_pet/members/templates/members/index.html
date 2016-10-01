@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}/css/members.css">
+{% endblock %}
+
 {% block content %}
 <div class="container">
 {% for role in roles %}
@@ -8,9 +13,31 @@
             <h2>{{ role.role }}</h2>
         </div>
         {% for member in role.members %}
-            <div class="col-md-4 col-xs-6">
-                <div class="panel panel-default">
-                    <div class="panel-body">{{ member.name }}</div>
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="panel panel-default text-center">
+                    <div class="panel-body">
+                        {% if member.photo %}
+                            <img src="{{ MEDIA_URL }}/{{ member.photo }}" class="img-circle">
+                        {% else %}
+                            <img src="" class="img-circle">
+                        {% endif %}
+                        <h4>{{ member.name }}</h4>
+                        {% if member.facebook_link %}
+                        <a href="{{ member.facebook_link }}" target="_blank" title="Facebook">
+                            <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.email %}
+                        <a href="mailto:{{ member.email }}" title="{{ member.email }}">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.lattes_link %}
+                        <a href="{{ member.lattes_link }}" target="_blank" title="Lattes">
+                            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
@@ -18,4 +45,8 @@
     </div>
 {% endfor %}
 </div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ MEDIA_URL }}/js/members.js"></script>
 {% endblock %}

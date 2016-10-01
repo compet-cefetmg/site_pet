@@ -21,7 +21,7 @@ class Member(models.Model):
     lattes_link = models.CharField(max_length=255, blank=True)
     user = models.ForeignKey(User, editable=False, on_delete=models.PROTECT)
     email = models.EmailField(max_length=255, blank=True)
-    role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members',default=None)
+    role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members')
 
     def __str__(self):
         return self.name

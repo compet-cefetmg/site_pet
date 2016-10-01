@@ -1,7 +1,7 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '%v==q1&=w)r-aeyy^07#r2brt3xi$$r+0qkv*@b+g$2!nbry-s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,3 +92,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
+
+DEBUG = False
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

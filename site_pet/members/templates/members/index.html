@@ -21,7 +21,7 @@
                         {% else %}
                             <img src="" class="img-circle">
                         {% endif %}
-                        <h4>{{ member.name }}</h4>
+                        <h4 title="{{ member.name }}">{{ member.name }}</h4>
                         {% if member.facebook_link %}
                         <a href="{{ member.facebook_link }}" target="_blank" title="Facebook">
                             <i class="fa fa-facebook-official" aria-hidden="true"></i>

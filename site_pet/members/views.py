@@ -9,7 +9,7 @@ def index(request, username=""):
     roles = []
     if username:
         user_query = get_list_or_404(User, username=username)
-    for role in MemberRole.objects.all():
+    for role in MemberRole.objects.order_by('name').all():
         if username:
             members = role.members.filter(user=user_query[0]).order_by('name').all()
         else:

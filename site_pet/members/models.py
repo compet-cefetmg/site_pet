@@ -7,15 +7,16 @@ import datetime
 
 
 class MemberRole(models.Model):
-    role = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
+    name_plural = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
-        return self.role
+        return self.name
 
 
 class Member(models.Model):
     name = models.CharField(max_length=255)
-    photo = models.ImageField(upload_to=get_image_path, blank=True)
+    photo = models.ImageField(max_length=255, upload_to=get_image_path, blank=True)
     facebook_link = models.CharField(max_length=255, blank=True)
     lattes_link = models.CharField(max_length=255, blank=True)
     user = models.ForeignKey(User, editable=False, on_delete=models.PROTECT)

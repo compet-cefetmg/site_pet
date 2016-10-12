@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_list_or_404
 from django.http import HttpResponse
 from .models import Publication
+from django.contrib.auth.models import User
 
 
-def index(request, username=""):
+def index(request):
     publications = []
+    username = request.GET.get('pet', '')
     if username:
         user_query = get_list_or_404(User, username=username)
         publications = Publication.objects.filter(user=user_query[0]).order_by('publish_date').all()

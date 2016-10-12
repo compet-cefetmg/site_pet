@@ -4,8 +4,9 @@ from .models import *
 from django.contrib.auth.models import User
 
 
-def index(request, username=""):
+def index(request):
     roles = []
+    username = request.GET.get('pet', '')
     if username:
         user_query = get_list_or_404(User, username=username)
     for role in MemberRole.objects.order_by('name').all():

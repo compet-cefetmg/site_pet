@@ -21,7 +21,7 @@ class PublicationAdmin(SummernoteModelAdmin):
             new_thumb_path = os.path.join(os.path.dirname(os.path.dirname(thumb_path)), str(obj.id))
             os.rename(thumb_path, new_thumb_path)
             rmtree(os.path.dirname(thumb_path))
-            obj.thumbnail = os.path.join('blog/thumbnails', str(obj.id))            
+            obj.thumbnail = os.path.join('MyPublication/images', str(obj.id))        
             obj.save()
         else:
             if obj.user != request.user:

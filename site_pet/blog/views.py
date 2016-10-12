@@ -12,7 +12,8 @@ def index(request):
         publications = Publication.objects.filter(user=user_query[0]).order_by('publish_date').all()
     else:
         publications = Publication.objects.order_by('publish_date').all()
-    context = {'publications': publications }
+    users = User.objects.all()
+    context = {'publications': publications, 'users': users, 'name': 'blog.index' }
     return render(request, 'blog/index.html', context)
 
 def show(request, id):

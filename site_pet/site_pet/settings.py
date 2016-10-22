@@ -53,7 +53,7 @@ TEMPLATES = [
     },
 ]
 
-
+TEMPLATES[0]['OPTIONS']['context_processors'].append('cefet.context_processors.pets_processor')
 
 WSGI_APPLICATION = 'site_pet.wsgi.application'
 

@@ -12,14 +12,14 @@
             <div class="panel panel-default publication">
                 <div class="panel-body">
                     <div class="col-sm-4 col-xs-12">
-                        <a href="{% url 'blog.show' id=publication.id %}">
+                        <a href="{% url 'blog.post' id=publication.id %}">
                             <img class="img-responsive" src="{{ MEDIA_URL }}/{{ publication.thumbnail }}">
                         </a>
                     </div>
                     <div class="col-sm-8 col-xs-12">
                         <span>{{ publication.user.get_username }}</span>
                         <span>{{ publication.publish_date }}</span>
-                        <a href="{% url 'blog.show' id=publication.id %}">
+                        <a href="{% url 'blog.post' id=publication.id %}?pet={{ publication.user }}">
                             <h3>{{ publication.title }}</h3>
                         </a>
                         <small>Por {{ publication.author }}</small>

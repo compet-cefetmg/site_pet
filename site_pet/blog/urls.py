@@ -1,8 +1,7 @@
 from django.conf.urls import url
-
-from . import views
+from blog import views
 
 urlpatterns = [
     url(r'^$', views.index, name='blog.index'),
-    url(r'^publication/(?P<id>[0-9]+)$', views.show, name='blog.show'),
+    url(r'^post/(?P<id>\d+)/$', views.post, name='blog.post'),
 ]

@@ -1,0 +1,10 @@
+.post .panel-body a {
+    text-decoration: none;
+}
+.post .panel-body div span {
+    margin-right: 20px;
+}
+.post .author,
+.post .date {
+    font-size: 11px;
+}

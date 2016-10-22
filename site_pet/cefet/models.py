@@ -6,12 +6,12 @@ import datetime
 
 
 class Campus(models.Model):
-    class Meta:
-        verbose_name_plural = 'campi'
-
     id = models.IntegerField(primary_key=True, verbose_name='Number')
     location = models.CharField(max_length=255)
     roman_id = models.CharField(max_length=2, editable=False)
+
+    class Meta:
+        verbose_name_plural = 'campi'
 
     def __str__(self):
         return 'Campus ' + self.roman_id + ' (' + self.location + ')'
@@ -20,6 +20,9 @@ class Campus(models.Model):
 class Course(models.Model):
     name = models.CharField(max_length=255, unique=True)
     campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name = 'curso'
 
     def __str__(self):
         return self.name +  ' (Campus ' + self.campus.roman_id + ')'
@@ -36,13 +39,13 @@ class Pet(models.Model):
         return self.course.__str__()
 
     class Meta:
-        verbose_name = 'Pet (all)'
-        verbose_name_plural = 'Pets (all)'
+        verbose_name = 'PET'
+        verbose_name_plural = 'Todos os PET'
 
 
 class MyPet(Pet):
 
     class Meta:
         proxy = True
-        verbose_name = 'Pet description'
-        verbose_name_plural = 'Pet description'
+        verbose_name = 'Meu PET'
+        verbose_name_plural = 'Meu PET'

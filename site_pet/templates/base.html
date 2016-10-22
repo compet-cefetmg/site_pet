@@ -7,12 +7,46 @@
 
     <link rel="stylesheet" href="{{ MEDIA_URL }}/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="{{ MEDIA_URL }}/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/base.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 
     {% block css %}
     {% endblock %}
 </head>
 
 <body>
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        PET
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'blog.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Posts<span class="sr-only">(current)</span></a></li>
+                        <li><a href="{% url 'members.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Membros</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="{% if not request.GET.pet %}active{% endif %}"><a href="{% url name %}">Todos</a></li>
+                {% for user in users %}
+                    <li role="presentation" class="{% if request.GET.pet == user.get_username %}active{% endif %}"><a href="{% url name %}?pet={{ user.get_username }}">{{ user.get_username }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </header>
+
 {% block content %}
 {% endblock %}
 

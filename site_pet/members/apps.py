@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class MembersConfig(AppConfig):
+class MemberConfig(AppConfig):
     name = 'members'
+    verbose_name = 'Membro'

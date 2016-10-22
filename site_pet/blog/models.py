@@ -7,7 +7,7 @@ import os
 import datetime
 
 
-class Publication(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Member, on_delete=models.PROTECT, null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, editable=False)
@@ -21,11 +21,11 @@ class Publication(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Publication (all)'
-        verbose_name_plural = 'Publications (all)'  
+        verbose_name = 'Post'
+        verbose_name_plural = 'Todos os posts'
 
-class MyPublication(Publication):
+class MyPost(Post):
     class Meta:
         proxy = True
-        verbose_name = 'Publication'
-        verbose_name_plural = 'Publications'
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'

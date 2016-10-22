@@ -31,7 +31,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="{% url 'blog.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Início<span class="sr-only">(current)</span></a></li>
+                        <li><a href="{% url 'blog.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Posts<span class="sr-only">(current)</span></a></li>
                         <li><a href="{% url 'members.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Membros</a></li>
                     </ul>
                 </div>

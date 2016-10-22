@@ -21,8 +21,8 @@ class Post(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Post (all)'
-        verbose_name_plural = 'Posts (all)'  
+        verbose_name = 'Post'
+        verbose_name_plural = 'Todos os posts'
 
 class MyPost(Post):
     class Meta:

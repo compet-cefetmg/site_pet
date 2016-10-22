@@ -10,6 +10,10 @@ class MemberRole(models.Model):
     name = models.CharField(max_length=255, unique=True)
     name_plural = models.CharField(max_length=255, unique=True)
 
+    class Meta:
+        verbose_name = 'Papel do membro'
+        verbose_name_plural = 'Papéis dos membros'
+
     def __str__(self):
         return self.name
 
@@ -27,12 +31,12 @@ class Member(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Member (all)'
-        verbose_name_plural = 'Members (all)'
+        verbose_name = 'Membro'
+        verbose_name_plural = 'Todos os membros'
 
 
 class MyMember(Member):
     class Meta:
         proxy = True
-        verbose_name = 'Member'
-        verbose_name_plural = 'Members'
+        verbose_name = 'Membro do meu PET'
+        verbose_name_plural = 'Membros do meu PET'

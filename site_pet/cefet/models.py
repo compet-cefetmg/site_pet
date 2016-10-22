@@ -6,8 +6,8 @@ import datetime
 
 
 class Campus(models.Model):
-    id = models.IntegerField(primary_key=True, verbose_name='Number')
-    location = models.CharField(max_length=255)
+    id = models.IntegerField(primary_key=True, verbose_name='Número')
+    location = models.CharField('Cidade', max_length=255)
     roman_id = models.CharField(max_length=2, editable=False)
 
     class Meta:
@@ -18,7 +18,7 @@ class Campus(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField('Nome', max_length=255, unique=True)
     campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
 
     class Meta:
@@ -29,23 +29,21 @@ class Course(models.Model):
 
 
 class Pet(models.Model):
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
-    photo = models.ImageField(upload_to=get_image_path)
-    course = models.ForeignKey(Course, on_delete=models.PROTECT)
-    start = models.DateField()
-    description = models.TextField()
+    user = models.OneToOneField(User, on_delete=models.PROTECT, verbose_name='Usuário')
+    photo = models.ImageField('Foto', upload_to=get_image_path, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.PROTECT, verbose_name='Curso')
+    start = models.DateField('Data de criação', blank=True)
+    description = models.TextField('Descrição', blank=True)
 
     def __str__(self):
         return self.course.__str__()
 
     class Meta:
-        verbose_name = 'PET'
-        verbose_name_plural = 'Todos os PET'
+        verbose_name_plural = 'PETs (todos)'
 
 
 class MyPet(Pet):
 
     class Meta:
         proxy = True
-        verbose_name = 'Meu PET'
-        verbose_name_plural = 'Meu PET'
+        verbose_name = 'PET'

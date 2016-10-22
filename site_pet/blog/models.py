@@ -8,12 +8,12 @@ import datetime
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=255)
-    author = models.ForeignKey(Member, on_delete=models.PROTECT, null=True)
+    title = models.CharField('Título', max_length=255)
+    author = models.ForeignKey(Member, on_delete=models.PROTECT, null=True, verbose_name='Autor')
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, editable=False)
-    text_call = models.CharField(max_length=255)
-    text_content = models.TextField()
-    thumbnail = models.ImageField(upload_to=get_image_path)
+    text_call = models.CharField('Descrição', max_length=255)
+    text_content = models.TextField('Conteúdo', )
+    thumbnail = models.ImageField('Thumbnail', upload_to=get_image_path)
     publish_date = models.DateField(auto_now=False, auto_now_add=True)
     last_modification = models.DateField(auto_now=True, auto_now_add=False)
 
@@ -21,11 +21,10 @@ class Post(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Post'
-        verbose_name_plural = 'Todos os posts'
+        verbose_name_plural = 'Posts (todos)'
+
 
 class MyPost(Post):
     class Meta:
         proxy = True
         verbose_name = 'Post'
-        verbose_name_plural = 'Posts'

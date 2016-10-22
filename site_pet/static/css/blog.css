@@ -4,7 +4,7 @@
 .post .panel-body div span {
     margin-right: 20px;
 }
-.post .author,
-.post .date {
-    font-size: 11px;
+.post .info {
+    font-size: 13px;
+    margin-bottom: 25px;
 }

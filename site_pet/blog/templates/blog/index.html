@@ -12,7 +12,7 @@
             <div class="panel panel-default post">
                 <div class="panel-body">
                     <div class="col-sm-4 col-xs-12">
-                        <a href="{% url 'blog.post' id=post.id %}">
+                        <a href="{% url 'blog.post' id=post.id %}" class="hidden-xs">
                             <img class="img-responsive" src="{{ MEDIA_URL }}/{{ post.thumbnail }}">
                         </a>
                     </div>

@@ -38,8 +38,9 @@
         </nav>
         <div class="container">
             <ul class="nav nav-pills">
+                <li role="presentation" class="{% if not request.GET.pet %}active{% endif %}"><a href="{% url name %}">Todos</a></li>
                 {% for user in users %}
-                    <li role="presentation" class="{% if request.GET.pet == user.get_username %}active{% endif %}"><a href="{% url name %}{% if request.GET.pet %}?pet={{ user.get_username }}{% endif %}">{{ user.get_username }}</a></li>
+                    <li role="presentation" class="{% if request.GET.pet == user.get_username %}active{% endif %}"><a href="{% url name %}?pet={{ user.get_username }}">{{ user.get_username }}</a></li>
                 {% endfor %}
             </ul>
         </div>

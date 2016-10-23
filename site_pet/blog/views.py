@@ -13,7 +13,7 @@ def index(request):
     else:
         posts = Post.objects.order_by('publish_date').all()
     users = User.objects.all()
-    context = {'posts': posts, 'users': users, 'name': 'blog.index'}
+    context = {'posts': posts, 'name': 'blog.index'}
     return render(request, 'blog/index.html', context)
 
 def post(request, id):

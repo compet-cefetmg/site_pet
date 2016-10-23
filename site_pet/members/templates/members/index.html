@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ MEDIA_URL }}/css/members.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/members.css">
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
                 <div class="panel panel-default text-center">
                     <div class="panel-body">
                         {% if member.photo %}
-                            <img src="{{ MEDIA_URL }}/{{ member.photo }}" class="img-circle">
+                            <img src="{{ STATIC_URL }}{{ member.photo }}" class="img-circle">
                         {% else %}
                             <img src="" class="img-circle">
                         {% endif %}
@@ -48,5 +48,5 @@
 {% endblock %}
 
 {% block js %}
-<script src="{{ MEDIA_URL }}/js/members.js"></script>
+<script src="{{ STATIC_URL }}js/members.js"></script>
 {% endblock %}

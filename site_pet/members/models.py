@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-from utils.upload_helper import get_image_path
 import os
 import datetime
 
@@ -16,6 +15,10 @@ class MemberRole(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def get_image_path(instance, filename):
+    return 'members/' + filename.split('/')[-1]
 
 
 class Member(models.Model):

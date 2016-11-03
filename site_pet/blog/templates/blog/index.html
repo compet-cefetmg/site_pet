@@ -5,19 +5,21 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container posts">
     {% for post in posts %}
     <div class="row">
-        <div class="col-md-8">
-            <div class="panel panel-default post">
+        <div class="col-md-11 col-sm-12">
+            <div class="post">
                 <div class="panel-body">
-                    <div class="col-sm-4 col-xs-12">
-                        <a href="{% url 'blog.post' id=post.id %}" class="hidden-xs">
-                            <img class="img-responsive" src="{{ STATIC_URL }}{{ post.thumbnail }}">
+                    <div class="col-sm-5 col-xs-12">
+                        <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user }}" class="hidden-xs">
+                            <img class="img-responsive" src="{{ MEDIA_URL }}{{ post.thumbnail }}">
                         </a>
                     </div>
-                    <div class="col-sm-8 col-xs-12">
-                        <span>{{ post.user.get_username }}</span>
+                    <div class="col-sm-7 col-xs-12">
+                        {% if not request.GET.pet %}
+                            <span>{{ post.user.pet }}</span>
+                        {% endif %}
                         <span>{{ post.publish_date }}</span>
                         <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user }}">
                             <h3>{{ post.title }}</h3>

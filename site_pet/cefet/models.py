@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from utils.upload_helper import get_image_path
 import os
 import datetime
 
@@ -8,7 +7,7 @@ import datetime
 class Campus(models.Model):
     id = models.IntegerField(primary_key=True, verbose_name='Número')
     location = models.CharField('Cidade', max_length=255)
-    roman_id = models.CharField(max_length=2, editable=False)
+    roman_id = models.CharField(max_length=10, editable=False)
 
     class Meta:
         verbose_name_plural = 'campi'
@@ -26,6 +25,10 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name +  ' (Campus ' + self.campus.roman_id + ')'
+
+
+def get_image_path(instance, filename):
+    return 'cefet/' + filename.split('/')[-1]
 
 
 class Pet(models.Model):

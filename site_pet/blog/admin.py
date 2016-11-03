@@ -6,6 +6,8 @@ from members.models import Member
 from django import forms
 from shutil import rmtree
 import os
+from django.conf import settings
+
 
 class PostAdmin(SummernoteModelAdmin):
     list_display = ('title', 'author', 'publish_date', 'last_modification')
@@ -17,12 +19,12 @@ class PostAdmin(SummernoteModelAdmin):
         if change is False:
             obj.user = request.user
             obj.save()
-            thumb_path = obj.thumbnail.file.name
-            new_thumb_path = os.path.join(os.path.dirname(os.path.dirname(thumb_path)), str(obj.id))
-            os.rename(thumb_path, new_thumb_path)
-            rmtree(os.path.dirname(thumb_path))
-            obj.thumbnail = os.path.join('MyPost/images', str(obj.id))        
-            obj.save()
+            # thumbnail_path = obj.thumbnail.file.name
+            # new_thumbnail_path = os.path.join('static/blog', str(obj.id))
+            # os.rename(thumbnail_path, new_thumbnail_path)
+            # rmtree(os.path.dirname(thumbnail_path))
+            # obj.thumbnail = os.path.join('blog', str(obj.id))        
+            # obj.save()
         else:
             if obj.user != request.user:
                 raise ValidationError('You can\t edit this')
@@ -32,6 +34,7 @@ class PostAdmin(SummernoteModelAdmin):
         thumbnail_path = obj.thumbnail.file.name
         obj.delete()
         os.remove(thumbnail_path)
+
 
 class MyPostAdmin(PostAdmin):
     def get_queryset(self, request):

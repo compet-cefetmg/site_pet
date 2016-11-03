@@ -2,9 +2,12 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from members.models import Member
-from utils.upload_helper import get_image_path
 import os
 import datetime
+
+
+def get_image_path(instance, filename):
+    return 'blog/' + filename.split('/')[-1]
 
 
 class Post(models.Model):

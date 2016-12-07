@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 import os
 import datetime
+from cefet.models import Pet
 
 
 class MemberRole(models.Model):
@@ -22,11 +23,12 @@ def get_image_path(instance, filename):
 
 
 class Member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    pet = models.ForeignKey(Pet, on_delete=models.PROTECT, related_name='members')
     name = models.CharField('Nome', max_length=255)
     photo = models.ImageField('Foto', max_length=255, upload_to=get_image_path, blank=True)
     facebook_link = models.CharField('Link do Facebook', max_length=255, blank=True)
     lattes_link = models.CharField('Link do Lattes', max_length=255, blank=True)
-    user = models.ForeignKey(User, editable=False, on_delete=models.PROTECT)
     email = models.EmailField('E-mail', max_length=255, blank=True)
     role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members', verbose_name='Papel')
 

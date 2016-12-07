@@ -11,7 +11,9 @@ INSTALLED_APPS = [
     'blog',
     'cefet',
     'members',
+    'staff',
     'django_summernote',
+    'bootstrap3',
     'sorl.thumbnail',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -99,3 +101,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, 'static/'),
 )
+
+LOGIN_URL = '/staff/login'
+

@@ -1,7 +1,5 @@
 *migrations/
-static/blog/images/
-static/members/images/
-static/cefet/images/
+*mediafiles/
 *.DS_Store
 
 # Byte-compiled / optimized / DLL files

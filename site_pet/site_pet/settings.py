@@ -15,7 +15,6 @@ INSTALLED_APPS = [
     'members',
     'staff',
     'django_summernote',
-    'bootstrap3',
     'sorl.thumbnail',
     'django.contrib.admin',
     'django.contrib.auth',

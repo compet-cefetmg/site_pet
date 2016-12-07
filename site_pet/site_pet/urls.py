@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^blog/', include('blog.urls')),
     url(r'^members/', include('members.urls')),
+    url(r'^staff/', include('staff.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

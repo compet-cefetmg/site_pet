@@ -11,21 +11,20 @@
             <p>Se você é o tutor de algum PET e não possui acesso, entre em contato com a Diretoria de Graduação.</p>
         </div>
         <div class="col-sm-4 col-xs-8">
-            {% if form.non_field_errors %}
-                <ul class='form-errors'>
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <form action="{% url 'staff.login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" method="post">
+            <form action="{% url 'staff.login' %}" method="post">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
-                    <button type="submit" class="btn btn-primary">
-                    Entrar
-                    </button>
-                {% endbuttons %}
+                {% if error %}
+                    <span class="help-block">{{ error }}</span>
+                {% endif %}
+                <div class="form-group">
+                    <h4><strong>Usuário<strong></h4>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <h4><strong>Senha<strong></h4>
+                    {{ form.password }}
+                </div>
+                <button class="btn btn-primary">Entrar</button>
             </form>
         </div>
     </div>

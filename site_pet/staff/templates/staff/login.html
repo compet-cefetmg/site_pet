@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load bootstrap3 %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 page-header">
+            <h3>Área de administração</h3>
+            <p>Nesta área, petianos podem adicionar e editar posts, e tutores podem adicionar e editar membros.</p>
+            <p>Se você é petiano e não possui acesso, entre em contato com o seu tutor.</p>
+            <p>Se você é o tutor de algum PET e não possui acesso, entre em contato com a Diretoria de Graduação.</p>
+        </div>
+        <div class="col-sm-4 col-xs-8">
+            {% if form.non_field_errors %}
+                <ul class='form-errors'>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form action="{% url 'staff.login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                    Entrar
+                    </button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

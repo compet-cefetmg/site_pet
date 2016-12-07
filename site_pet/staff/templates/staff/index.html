@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 sidebar">
+           <p><a href="#">Gerenciar posts</a></p>
+           <p><a href="#">Gerenciar membros</a></p>
+        </div>
+        <div class="col-md-9">
+            <ul class="nav nav-pills">
+                <li role="presentation"><button class="btn btn-success">Novo</button></li>
+            </ul>
+            <table id="posts" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/staff.css">
+{% endblock %}

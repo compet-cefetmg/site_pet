@@ -34,6 +34,13 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{% url 'blog.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Blog<span class="sr-only">(current)</span></a></li>
                         <li><a href="{% url 'members.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Membros</a></li>
+                    </ul>  
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'staff.logout' %}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{% url 'staff.login' %}">Login</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

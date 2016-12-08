@@ -38,4 +38,30 @@ $(function() {
         window.location.href = '/blog/post/' + data[0] + '/edit';
     });
 
+    $('#posts tbody').on('click', '.remove-btn', function() {
+        var data = table.row($(this).parents('tr')).data();
+        swal({
+            'type': 'warning',
+            'title': 'Atenção!',
+            'text': 'Tem certeza que deseja remover o post "' + data[1] + '"?',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, remover!',
+            confirmButtonColor: '#DD6B55',
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        }, function() {
+            $.ajax({
+                type: 'DELETE',
+                data: data[0],
+                url: '/blog/post/delete',
+                sucess: function() {
+                    swal('Sucesso!', 'O post selecionado foi removido com sucesso.', 'success');
+                },
+                error: function() {
+                    swal('Erro!', 'Não foi possível remover o post selecionado.', 'error');
+                }
+            });
+        });
+    });
+
 });

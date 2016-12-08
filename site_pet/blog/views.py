@@ -29,13 +29,12 @@ def post(request, id):
 def add_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
-        import pdb; pdb.set_trace()
         if form.is_valid():
             post = form.save()
             post.user = request.user
             return HttpResponse('OK')
         context = {'name': 'blog.add_post', 'form': form}
-        return render(request, 'blog/form.html', context)
+        return render(request, 'blog/form.html', context, status=400)
     else:
         form = PostForm()
         context = {'name': 'blog.add_post', 'form': form}

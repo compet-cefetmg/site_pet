@@ -20,4 +20,3 @@ class LoginTestCase(TestCase):
     def test_should_logout_with_success(self):
         response = self.client.get('/staff/logout')
         self.assertEqual(response.status_code, 302)
-

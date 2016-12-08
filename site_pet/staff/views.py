@@ -12,10 +12,10 @@ def auth_login(request):
         if user:
             login(request, user)
             if 'next' in request.GET:
-                return redirect(request.GET['next'])
-            return redirect('/')
+                return redirect(request.GET['next'], permanent=True)
+            return redirect('/', permanent=True)
         context['error'] = 'Usuário ou senha incorretos.'
-        return render(request, 'staff/login.html', context)
+        return render(request, 'staff/login.html', context, status=401)
     return render(request, 'staff/login.html', context)
 
 

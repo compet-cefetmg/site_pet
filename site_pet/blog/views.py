@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_list_or_404, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 
 def index(request):
@@ -23,6 +24,12 @@ def post(request, id):
     post = get_object_or_404(Post, id=id)
     context = {'post': post, 'name': 'blog.index'}
     return render(request, 'blog/post.html', context)
+
+
+def all(request):
+    posts = [(p.id, p.title, p.author.name, p.publish_date.strftime("%d/%m/%y")) for p in Post.objects.all()]
+    json = {'data': posts}
+    return JsonResponse(json, safe=False)
 
 
 @login_required

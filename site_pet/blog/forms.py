@@ -14,6 +14,5 @@ class PostForm(ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control', 'widget': 'select'}),
             'text_call': forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 100px;'}),
-            'text_content': forms.TextInput(attrs={'class': 'form-control'}),
             'text_content': SummernoteWidget(),
         }

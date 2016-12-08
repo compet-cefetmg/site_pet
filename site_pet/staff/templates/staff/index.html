@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/staff.css">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -9,23 +14,26 @@
         </div>
         <div class="col-md-9">
             <ul class="nav nav-pills">
-                <li role="presentation"><button class="btn btn-success">Novo</button></li>
+                <li role="presentation"><a class="btn btn-success" href="{% url 'blog.add_post' %}">Novo</a></li>
             </ul>
-            <table id="posts" class="display" cellspacing="0" width="100%">
+            <table id="posts" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Título</th>
                         <th>Autor</th>
                         <th>Data</th>
+                        <th>Opções</th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
-{% block css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/staff.css">
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}js/blog/table.js"></script>
 {% endblock %}

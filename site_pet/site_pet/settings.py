@@ -108,3 +108,7 @@ STATICFILES_DIRS = (
 
 LOGIN_URL = '/staff/login'
 
+SUMMERNOTE_CONFIG = {
+    'lang': 'pt-BR',
+    'width': '100%',
+}

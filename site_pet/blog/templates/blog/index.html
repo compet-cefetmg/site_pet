@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+{% include "navpills.html" %}
 <div class="container posts">
     {% for post in posts %}
     <div class="row">
@@ -12,7 +13,7 @@
             <div class="post">
                 <div class="panel-body">
                     <div class="col-sm-5 col-xs-12">
-                        <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user }}" class="hidden-xs">
+                        <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user.member.pet.id }}" class="hidden-xs">
                             <img class="img-responsive" src="{{ MEDIA_URL }}{{ post.thumbnail }}">
                         </a>
                     </div>
@@ -31,6 +32,8 @@
             </div>
         </div>
     </div>
+    {% empty %}
+    <p>Esse PET ainda não possui nenhum post!</p>
     {% endfor %}
 </div>
 {% endblock %}

@@ -1,0 +1,8 @@
+<div class="container">
+    <ul class="nav nav-pills">
+        <li role="presentation" class="{% if not request.GET.pet %}active{% endif %}"><a href="{% url name %}">Todos</a></li>
+        {% for pet in pets %}
+            <li role="presentation" class="{% if request.GET.pet == pet.id|stringformat:"i" %}active{% endif %}"><a href="{% url name %}?pet={{ pet.id }}">{{ pet }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

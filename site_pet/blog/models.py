@@ -25,9 +25,3 @@ class Post(models.Model):
 
     class Meta:
         verbose_name_plural = 'Posts (todos)'
-
-
-class MyPost(Post):
-    class Meta:
-        proxy = True
-        verbose_name = 'Post'

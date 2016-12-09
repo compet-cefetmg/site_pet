@@ -34,7 +34,7 @@ def get_image_path(instance, filename):
 class Pet(models.Model):
     photo = models.ImageField('Foto', upload_to=get_image_path, blank=True)
     course = models.ForeignKey(Course, on_delete=models.PROTECT, verbose_name='Curso')
-    start = models.DateField('Data de criação', blank=True)
+    start = models.DateField('Data de criação', blank=True, null=True)
     description = models.TextField('Descrição', blank=True)
 
     def __str__(self):
@@ -42,10 +42,3 @@ class Pet(models.Model):
 
     class Meta:
         verbose_name_plural = 'PETs'
-
-
-class MyPet(Pet):
-
-    class Meta:
-        proxy = True
-        verbose_name = 'PET'

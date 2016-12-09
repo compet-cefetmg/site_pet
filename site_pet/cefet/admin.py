@@ -13,6 +13,7 @@ class CampusAdmin(admin.ModelAdmin):
 
 class PetAdmin(admin.ModelAdmin):
     list_display = ('course_name', 'course_campus')
+    fields = ['course']
     
     def course_name(self, obj):
         return obj.course.name
@@ -21,14 +22,6 @@ class PetAdmin(admin.ModelAdmin):
         return obj.course.campus
 
 
-class MyPetAdmin(PetAdmin):
-    fields = ['description', 'start', 'photo']
-
-    def get_queryset(self, request):
-        return MyPet.objects.filter(id=request.user.pet.id)
-
-
 admin.site.register(Course)
 admin.site.register(Campus, CampusAdmin)
 admin.site.register(Pet, PetAdmin)
-# admin.site.register(MyPet, MyPetAdmin)

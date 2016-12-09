@@ -8,14 +8,15 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-3 sidebar">
-           <p><a href="#">Gerenciar posts</a></p>
-           <p><a href="#">Gerenciar membros</a></p>
+        <div class="col-md-12">
+            <div class="page-header">
+                <h2>Área de administração</h2>
+                <p>Como <strong>petiano</strong>, você pode adicionar, editar e remover posts do seu PET.</p>
+            </div>
         </div>
         <div class="col-md-9">
-            <ul class="nav nav-pills">
-                <li role="presentation"><a class="btn btn-success" href="{% url 'blog.add_post' %}">Novo</a></li>
-            </ul>
+            <h4>Posts</h4>
+            <a href="/blog/post/add" class="btn btn-sm btn-success">Adicionar</a>
             <table id="posts" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -35,5 +36,6 @@
 {% block js %}
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-<script src="{{ STATIC_URL }}js/blog/table.js"></script>
+<script src="{{ STATIC_URL }}js/table.js"></script>
+<script src="{{ STATIC_URL }}js/staff/member_index.js"></script>
 {% endblock %}

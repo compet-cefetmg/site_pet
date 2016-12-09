@@ -1,18 +1,12 @@
-$(function() {
-    var table = $('#posts').DataTable({
-        'sAjaxSource': '/blog/all',
-        'dom': 'ftp',
+function initDataTable(tableId, urlPrefix) {
+    var table = $('#'+tableId).DataTable({
+        'sAjaxSource': urlPrefix + 'all',
+        'dom': 'ft',
         'language': {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json'
         },
         // Renders title row with anchor tag
         'columnDefs': [
-            {
-                'targets': 1,
-                'render': function (data, type, row, meta) {
-                    return '<a href="/blog/post/' + row[0] + '">' + data + '</a>';
-                }
-            },
         // Renders edit and remove buttons
             {
                 "targets": -1,
@@ -22,7 +16,7 @@ $(function() {
                         <button class="btn btn-xs btn-primary edit-btn" class="edit-btn">
                             <i class="fa fa-pencil"></i> Editar
                         </button>
-                        <button class="btn btn-xs btn-danger remove-btn"href="/blog/post/' + row[0] + '/delete">
+                        <button class="btn btn-xs btn-danger remove-btn">
                             <i class="fa fa-trash"></i> Remover
                         </button>
                         `;
@@ -31,17 +25,17 @@ $(function() {
         ]
     });
 
-    $('#posts tbody').on('click', '.edit-btn', function() {
+    $('#'+tableId +' tbody').on('click', '.edit-btn', function() {
         var data = table.row($(this).parents('tr')).data();
-        window.location.href = '/blog/post/' + data[0] + '/edit';
+        window.location.href = urlPrefix + data[0] + '/edit';
     });
 
-    $('#posts tbody').on('click', '.remove-btn', function() {
+    $('#'+tableId +' tbody').on('click', '.remove-btn', function() {
         var data = table.row($(this).parents('tr')).data();
         swal({
             'type': 'warning',
             'title': 'Atenção!',
-            'text': 'Tem certeza que deseja remover o post "' + data[1] + '"?',
+            'text': 'Você tem certeza disso?',
             showCancelButton: true,
             confirmButtonText: 'Sim, remover!',
             confirmButtonColor: '#DD6B55',
@@ -51,15 +45,14 @@ $(function() {
             $.ajax({
                 type: 'DELETE',
                 data: data[0],
-                url: '/blog/post/delete',
+                url: urlPrefix + 'delete',
                 sucess: function() {
-                    swal('Sucesso!', 'O post selecionado foi removido com sucesso.', 'success');
+                    swal('Sucesso!', 'Removido com sucesso.', 'success');
                 },
                 error: function() {
-                    swal('Erro!', 'Não foi possível remover o post selecionado.', 'error');
+                    swal('Erro!', 'Não foi possível remover.', 'error');
                 }
             });
         });
     });
-
-});
+}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/staff.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h2>Área de administração - Tutor</h2>
+                <p>Como <strong>tutor</strong>, você pode adicionar, editar e remover posts e membros do seu PET.</p>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h3>Posts</h3>
+            <a href="/blog/post/add" class="btn btn-sm btn-success">Adicionar</a>
+            <table id="posts" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Data</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+            </table>
+            <h3>Membros</h3>
+            <a href="/members/member/add" class="btn btn-sm btn-success">Adicionar</a>
+            <table id="members" class="display table table-bordered table-striped" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Papel</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+<script src="{{ STATIC_URL }}js/table.js"></script>
+<script src="{{ STATIC_URL }}js/staff/tutor_index.js"></script>
+{% endblock %}

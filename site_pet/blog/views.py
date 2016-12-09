@@ -29,7 +29,7 @@ def post(request, id):
 
 
 def all(request):
-    posts = [(p.id, p.title, p.author, p.publish_date.strftime("%d/%m/%y"))
+    posts = [(p.id, p.title, p.member.name, p.publish_date.strftime("%d/%m/%y"))
              for p in Post.objects.all()]
     json = {'data': posts}
     return JsonResponse(json, safe=False)

@@ -9,10 +9,10 @@ from django_summernote.widgets import SummernoteWidget
 class PostForm(ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'author', 'text_call', 'text_content', 'thumbnail']
+        fields = ['title', 'publish_as_team', 'text_call', 'text_content', 'thumbnail']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'publish_as_team': forms.RadioSelect(choices=[(True, 'Sim'), (False, 'Não')]),
             'text_call': forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 100px;'}),
             'text_content': SummernoteWidget(),
         }

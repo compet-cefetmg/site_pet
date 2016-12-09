@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-8">
             <h2>{{ post.title }}</h2>
-            <p class="info">Postado por {{ post.author }} em {{ post.publish_date|date:"d M Y" }}</p>
+            <p class="info">Postado por {% if post.publish_as_team %}Equipe PET{% else %}{{ post.author.name }}{% endif %} em {{ post.publish_date|date:"d M Y" }}</p>
             {{ post.text_content|safe }}
         </div>
     </div>

@@ -40,8 +40,8 @@ def add_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save()
-            post.user = request.user
+            post = form
+            post.member = request.user.member
             post.save()
             return redirect(reverse('staff.index'))
         context = {'name': 'blog.add_post', 'form': form}

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from staff.forms import LoginForm
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import Group
 
 
 def auth_login(request):
@@ -23,5 +24,15 @@ def auth_logout(request):
     logout(request)
     return redirect('/')
 
+
 def index(request):
-    return render(request, 'staff/index.html', {'name': 'staff.index'})
+    user_groups = request.user.groups.all()
+    if Group.objects.get(name='dirgrad') in user_groups:
+        return render(request, 'staff/dirgrad_index.html', {'name': 'staff.index'})
+    elif Group.objects.get(name='tutors') in user_groups:
+        return render(request, 'staff/tutors_index.html', {'name': 'staff.index'})
+    return render(request, 'staff/member_index.html', {'name': 'staff.index'})
+
+
+
+

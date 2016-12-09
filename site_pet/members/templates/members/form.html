@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/members.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">Novo membro</h2>
+            <p>Como tutor, você pode criar um usuário para cada um dos integrantes de seu PET.</p>
+            <p>Com usuário e senha, cada integrante pode entrar em sua respectiva conta e adicionar informações como nome, foto, links para redes sociais, entre outros.</p>
+        </div>
+        <div class="col-md-7">
+            <form action="{% url 'members.add_member' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <h4><strong>{{ field.label }}<strong></h4>
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <button class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

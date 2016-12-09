@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/members.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7 page-header">
+            <h2>Novo tutor</h2>
+            <p>Adicione o tutor de um determinado PET. Em seguida, informe-o do usuário e da senha cadastrados, para que ele tenha acesso à área de administração de seu PET. Ele poderá alterar as informações aqui definidas mais tarde, com exceção do seu nome de usuário e do seu PET.</p>
+        </div>
+        <div class="col-md-7">
+            <form action="{% url 'members.add_tutor' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <h4><strong>{{ field.label }}<strong></h4>
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <button class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

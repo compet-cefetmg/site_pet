@@ -31,4 +31,4 @@ class MyPetAdmin(PetAdmin):
 admin.site.register(Course)
 admin.site.register(Campus, CampusAdmin)
 admin.site.register(Pet, PetAdmin)
-admin.site.register(MyPet, MyPetAdmin)
+# admin.site.register(MyPet, MyPetAdmin)

@@ -11,45 +11,45 @@ class MemberInline(admin.StackedInline):
     model = Member
     can_delete = False
     verbose_name_plural = 'Informações de membro'
-    # list_display = ('name', 'role', 'email')
-
-    # def get_queryset(self, request):
-    #     return Member.objects.all()
-
-    # def save_model(self, request, obj, form, change):
-    #     if change is False:
-    #         obj.user = request.user
-    #         obj.save()
-    #         if obj.photo:
-    #             photo_path = obj.photo.file.name
-    #             new_photo_path = os.path.join(os.path.dirname(os.path.dirname(photo_path)), str(obj.id))
-    #             os.rename(photo_path,new_photo_path)
-    #             rmtree(os.path.dirname(photo_path))
-    #             obj.photo = os.path.join('members/photos', str(obj.id))
-    #         obj.save()
-    #     else:
-    #         if obj.user != request.user:
-    #             raise PermissionDenied
-    #         obj.save()
-
-    # def delete_model(self, request, obj):
-    #     photo_path = os.path.join(settings.MEDIA_ROOT, obj.photo.file.name)
-    #     obj.delete()
-    #     os.remove(photo_path)
-
-class UserAdmin(BaseUserAdmin):
-    inlines = (MemberInline, )
+    fields = ('name', 'role', 'pet', 'email')
+    min_num = 1
 
 
-# class MyMemberAdmin(MemberAdmin):
-#     def get_queryset(self, request):
-#         return MyMember.objects.filter(pet=request.user.pet)
+class MemberAdmin(admin.ModelAdmin):
+    def get_queryset(self, request):
+        return Member.objects.all()
 
-# admin.site.register(MyMember, MyMembersAdmin)
+    def save_model(self, request, obj, form, change):
+        if change is False:
+            obj.user = request.user
+            obj.save()
+            if obj.photo:
+                photo_path = obj.photo.file.name
+                new_photo_path = os.path.join(os.path.dirname(os.path.dirname(photo_path)), str(obj.id))
+                os.rename(photo_path,new_photo_path)
+                rmtree(os.path.dirname(photo_path))
+                obj.photo = os.path.join('members/photos', str(obj.id))
+            obj.save()
+        else:
+            if obj.user != request.user:
+                raise PermissionDenied
+            obj.save()
+
+    def delete_model(self, request, obj):
+        photo_path = os.path.join(settings.MEDIA_ROOT, obj.photo.file.name)
+        obj.delete()
+        os.remove(photo_path)
+
+
+class MyMemberAdmin(MemberAdmin):
+    def get_queryset(self, request):
+        return MyMember.objects.filter(user=request.user)
+
+admin.site.register(MyMember, MyMemberAdmin)
 # admin.site.register(Member, MembersAdmin)
 admin.site.register(MemberRole)
 
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
-admin.site.register(Member)
+# admin.site.unregister(User)
+# admin.site.register(User, UserAdmin)
+# admin.site.register(Member)
 

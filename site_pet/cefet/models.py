@@ -41,7 +41,7 @@ class Pet(models.Model):
         return self.course.__str__()
 
     class Meta:
-        verbose_name_plural = 'PETs (todos)'
+        verbose_name_plural = 'PETs'
 
 
 class MyPet(Pet):

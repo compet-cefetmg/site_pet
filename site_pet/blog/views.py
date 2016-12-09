@@ -40,7 +40,7 @@ def add_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form
+            post = form.save()
             post.member = request.user.member
             post.save()
             return redirect(reverse('staff.index'))

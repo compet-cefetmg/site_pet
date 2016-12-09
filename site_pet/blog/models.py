@@ -12,7 +12,6 @@ def get_image_path(instance, filename):
 
 class Post(models.Model):
     title = models.CharField('Título', max_length=255)
-    author = models.CharField('Autor', max_length=255)
     member = models.ForeignKey(Member, on_delete=models.PROTECT, editable=False, null=True)
     text_call = models.CharField('Descrição', max_length=255)
     text_content = models.TextField('Conteúdo', )

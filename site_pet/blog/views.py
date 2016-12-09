@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_list_or_404, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import HttpResponse, JsonResponse
 from .models import Post
 from .forms import PostForm
+from cefet.models import Pet
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
@@ -9,13 +10,14 @@ from datetime import datetime
 
 def index(request):
     posts = []
-    username = request.GET.get('pet', '')
-    if username:
-        user_query = get_list_or_404(User, username=username)
-        posts = Post.objects.filter(user=user_query[0]).order_by('publish_date').all()
+    pet_id = request.GET.get('pet', '')
+    if pet_id:
+        pet = get_object_or_404(Pet, id=pet_id)
+        users = [member.user for member in pet.members.all()]
+        posts = Post.objects.filter(
+            user__in=users).order_by('publish_date').all()
     else:
         posts = Post.objects.order_by('publish_date').all()
-    users = User.objects.all()
     context = {'posts': posts, 'name': 'blog.index'}
     return render(request, 'blog/index.html', context)
 
@@ -27,7 +29,8 @@ def post(request, id):
 
 
 def all(request):
-    posts = [(p.id, p.title, p.author.name, p.publish_date.strftime("%d/%m/%y")) for p in Post.objects.all()]
+    posts = [(p.id, p.title, p.author, p.publish_date.strftime("%d/%m/%y"))
+             for p in Post.objects.all()]
     json = {'data': posts}
     return JsonResponse(json, safe=False)
 
@@ -39,7 +42,8 @@ def add_post(request):
         if form.is_valid():
             post = form.save()
             post.user = request.user
-            return HttpResponse('OK')
+            post.save()
+            return redirect(reverse('staff.index'))
         context = {'name': 'blog.add_post', 'form': form}
         return render(request, 'blog/form.html', context, status=400)
     else:

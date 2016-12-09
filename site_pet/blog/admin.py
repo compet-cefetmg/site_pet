@@ -46,5 +46,5 @@ class MyPostAdmin(PostAdmin):
         return super(MyPostAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-admin.site.register(MyPost, MyPostAdmin)
-admin.site.register(Post, PostAdmin)
+# admin.site.register(MyPost, MyPostAdmin)
+# admin.site.register(Post, PostAdmin)

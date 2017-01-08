@@ -124,3 +124,13 @@ def edit_member(request):
     form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
                                    'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
     return render(request, 'members/edit_member.html', {'form': form})
+
+@login_required
+def edit_member_role(request):
+    dirgrad = Group.objects.get(name='dirgrad')
+    tutors = Group.objects.get(name='tutors')
+    if dirgrad in request.user.groups.all():
+        return HttpResponse('dirgrad')
+    elif tutors in request.user.groups.all():
+        return HttpResponse('tutor')
+    return HttpResponse('not allowed')

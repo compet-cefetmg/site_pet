@@ -17,7 +17,7 @@ def index(request):
         else:
             members = role.members.order_by('name').all()
         roles.append({'role': role.name_plural, 'members': members})
-    context = {'roles': roles, 'name' : 'members.index'}
+    context = {'roles': roles, 'name': 'members.index'}
     return render(request, 'members/index.html', context)
 
 
@@ -25,20 +25,20 @@ def index(request):
 def add_member(request):
     if request.method == 'POST':
         form = NewMemberForm(request.POST)
-        
+
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
             role = form.cleaned_data['role']
-            
+
             user = User.objects.create_user(username, email, password)
             if MemberRole.objects.get(id=role).name == 'Tutor':
                 user.groups.add(Group.objects.get(name='tutors'))
             else:
                 user.groups.add(Group.objects.get(name='members'))
-            
+
             member = Member()
             member.user = user
             member.name = name
@@ -51,7 +51,7 @@ def add_member(request):
 
         context = {'name': 'members.add_member', 'form': form}
         return render(request, 'members/add_member.html', context, status=400)
-    
+
     else:
         form = NewMemberForm()
         context = {'name': 'members.add_member', 'form': form}
@@ -67,11 +67,11 @@ def add_tutor(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
-            
+
             user = User.objects.create_user(username, email, password)
             user.groups.add(Group.objects.get(name='tutors'))
             user.save()
-            
+
             tutor = Member()
             tutor.name = name
             tutor.user = user
@@ -79,10 +79,10 @@ def add_tutor(request):
             tutor.pet = Pet.objects.get(id=form.cleaned_data['pet'])
             tutor.save()
             return redirect(reverse('staff.index'))
-        
+
         context = {'name': 'members.add_tutor', 'form': form}
         return render(request, 'members/add_tutor.html', context, status=400)
-    
+
     else:
         form = TutorForm()
         context = {'name': 'members.add_tutor', 'form': form}
@@ -102,33 +102,38 @@ def all_tutors(request):
 @login_required
 def all_members(request):
     member = Member.objects.filter(user=request.user)[0]
-    json = {'data': [(x.id, x.name, x.user.get_username(), x.user.email, x.role.name) for x in member.pet.members.all()]}
+    json = {'data': [(x.id, x.name, x.user.get_username(
+    ), x.user.email, x.role.name) for x in member.pet.members.all()]}
     return JsonResponse(json, safe=False)
+
 
 @login_required
 def edit_member(request):
     member = request.user.member
     if request.method == 'POST':
-        form = EditMemberForm(request.POST)
+        form = EditMemberForm(request.POST, request.FILES)
         if form.is_valid():
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             facebook_link = form.cleaned_data['facebook_link']
             lattes_link = form.cleaned_data['lattes_link']
-            
+            photo = form.cleaned_data['photo']
+
             user = User.objects.get(id=request.user.id)
             user.email = email
+            photo.name = user.username
 
             member.name = name
             member.facebook_link = facebook_link
             member.lattes_link = lattes_link
+            member.photo = photo
 
             user.save()
             member.save()
             return redirect(reverse('staff.index'))
         context = {'name': 'members.edit_member', 'form': form}
         return render(request, 'members/edit_member.html', context, status=400)
-    form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email, 'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link})
+    form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
+                                   'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
     context = {'name': 'members.edit_member', 'form': form}
     return render(request, 'members/edit_member.html', context)
-

@@ -14,7 +14,7 @@
             <p>Aqui, você pode alterar suas informações pessoais.</p>
         </div>
         <div class="col-md-7">
-            <form action="{% url 'members.edit_member' %}" method="post">
+            <form action="{% url 'members.edit_member' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                     {% if field == form.old_email %}

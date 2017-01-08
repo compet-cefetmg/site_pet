@@ -24,22 +24,12 @@ def get_image_path(instance, filename):
 
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    pet = models.ForeignKey(Pet, on_delete=models.PROTECT, related_name='members')
     name = models.CharField('Nome', max_length=255)
+    pet = models.ForeignKey(Pet, on_delete=models.PROTECT, related_name='members')
     photo = models.ImageField('Foto', max_length=255, upload_to=get_image_path, blank=True)
     facebook_link = models.CharField('Link do Facebook', max_length=255, blank=True)
     lattes_link = models.CharField('Link do Lattes', max_length=255, blank=True)
-    email = models.EmailField('E-mail', max_length=255, blank=True)
     role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members', verbose_name='Papel')
 
     def __str__(self):
         return self.name
-
-    class Meta:
-        verbose_name_plural = 'Membros (todos)'
-
-
-class MyMember(Member):
-    class Meta:
-        proxy = True
-        verbose_name = 'Membro'

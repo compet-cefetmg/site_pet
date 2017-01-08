@@ -29,7 +29,7 @@ def index(request):
     user_groups = request.user.groups.all()
     if Group.objects.get(name='dirgrad') in user_groups:
         return render(request, 'staff/dirgrad_index.html', {'name': 'staff.index'})
-    elif Group.objects.get(name='tutors') in user_groups:
+    if Group.objects.get(name='tutors') in user_groups:
         return render(request, 'staff/tutors_index.html', {'name': 'staff.index'})
     return render(request, 'staff/member_index.html', {'name': 'staff.index'})
 

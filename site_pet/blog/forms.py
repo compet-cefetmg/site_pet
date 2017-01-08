@@ -16,3 +16,6 @@ class PostForm(ModelForm):
             'text_call': forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 100px;'}),
             'text_content': SummernoteWidget(),
         }
+        help_texts = {
+            'text_call': 'A descrição do post será exibida na página inicial.',
+        }

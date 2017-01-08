@@ -23,6 +23,7 @@
                             <span class="help-block">{{ error }}</span>
                         {% endfor %}
                     {% endif %}
+                    {{ field.help_text }}
                     {% if field.field.label == 'Postar em nome da equipe' %}
                     <span class="help-block">Ao postar em nome da equipe, a autoria do post será atribuida ao PET.<br>Ainda será possível saber qual membro criou o post.</span>
                     <div class="radio">

@@ -25,23 +25,30 @@ def index(request):
 def add_member(request):
     if request.method == 'POST':
         form = NewMemberForm(request.POST)
+        
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
+            role = form.cleaned_data['role']
+            
             user = User.objects.create_user(username, email, password)
             user.groups.add(Group.objects.get(name='members'))
+            
             member = Member()
-            member.name = name
-            member.email = email
             member.user = user
-            member.role = MemberRole.objects.get(name='Bolsista')
+            member.name = name
+            member.role = MemberRole.objects.get(id=role)
             member.pet = Member.objects.filter(user=request.user)[0].pet
+
+            user.save()
             member.save()
             return redirect(reverse('staff.index'))
+
         context = {'name': 'members.add_member', 'form': form}
         return render(request, 'members/form.html', context, status=400)
+    
     else:
         form = NewMemberForm()
         context = {'name': 'members.add_member', 'form': form}
@@ -57,19 +64,22 @@ def add_tutor(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
+            
             user = User.objects.create_user(username, email, password)
             user.groups.add(Group.objects.get(name='tutors'))
             user.save()
+            
             tutor = Member()
             tutor.name = name
-            tutor.email = email
             tutor.user = user
             tutor.role = MemberRole.objects.get(name='Tutor')
             tutor.pet = Pet.objects.get(id=form.cleaned_data['pet'])
             tutor.save()
             return redirect(reverse('staff.index'))
+        
         context = {'name': 'members.add_tutor', 'form': form}
         return render(request, 'members/tutor_form.html', context, status=400)
+    
     else:
         form = TutorForm()
         context = {'name': 'members.add_tutor', 'form': form}
@@ -89,6 +99,6 @@ def all_tutors(request):
 @login_required
 def all_members(request):
     member = Member.objects.filter(user=request.user)[0]
-    json = {'data': [(m.id, m.name, m.email, m.role.name) for m in member.pet.members.all()]}
+    json = {'data': [(x.id, x.name, x.user.get_username(), x.user.email, x.role.name) for x in member.pet.members.all()]}
     return JsonResponse(json, safe=False)
 

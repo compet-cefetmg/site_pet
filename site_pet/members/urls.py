@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^tutor/add/$', views.add_tutor, name='members.add_tutor'),
     url(r'^tutor/all/$', views.all_tutors, name='members.all_tutors'),
     url(r'^member/all/$', views.all_members, name='members.all_members'),
+    url(r'^member/edit/$', views.edit_member, name='members.edit_member'),
 ]

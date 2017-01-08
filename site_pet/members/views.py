@@ -50,12 +50,12 @@ def add_member(request):
             return redirect(reverse('staff.index'))
 
         context = {'name': 'members.add_member', 'form': form}
-        return render(request, 'members/form.html', context, status=400)
+        return render(request, 'members/add_member.html', context, status=400)
     
     else:
         form = NewMemberForm()
         context = {'name': 'members.add_member', 'form': form}
-        return render(request, 'members/form.html', context)
+        return render(request, 'members/add_member.html', context)
 
 
 @login_required
@@ -81,12 +81,12 @@ def add_tutor(request):
             return redirect(reverse('staff.index'))
         
         context = {'name': 'members.add_tutor', 'form': form}
-        return render(request, 'members/tutor_form.html', context, status=400)
+        return render(request, 'members/add_tutor.html', context, status=400)
     
     else:
         form = TutorForm()
         context = {'name': 'members.add_tutor', 'form': form}
-        return render(request, 'members/tutor_form.html', context)
+        return render(request, 'members/add_tutor.html', context)
 
 
 @login_required
@@ -104,4 +104,31 @@ def all_members(request):
     member = Member.objects.filter(user=request.user)[0]
     json = {'data': [(x.id, x.name, x.user.get_username(), x.user.email, x.role.name) for x in member.pet.members.all()]}
     return JsonResponse(json, safe=False)
+
+@login_required
+def edit_member(request):
+    member = request.user.member
+    if request.method == 'POST':
+        form = EditMemberForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            facebook_link = form.cleaned_data['facebook_link']
+            lattes_link = form.cleaned_data['lattes_link']
+            
+            user = User.objects.get(id=request.user.id)
+            user.email = email
+
+            member.name = name
+            member.facebook_link = facebook_link
+            member.lattes_link = lattes_link
+
+            user.save()
+            member.save()
+            return redirect(reverse('staff.index'))
+        context = {'name': 'members.edit_member', 'form': form}
+        return render(request, 'members/edit_member.html', context, status=400)
+    form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email, 'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link})
+    context = {'name': 'members.edit_member', 'form': form}
+    return render(request, 'members/edit_member.html', context)
 

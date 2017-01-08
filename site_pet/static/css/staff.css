@@ -2,6 +2,10 @@
     margin-top: 40px;
 }
 
+.edit-btn {
+    float: right;
+}
+
 @media(max-width:767px){
     .remove-btn {
         margin-top: 5px;

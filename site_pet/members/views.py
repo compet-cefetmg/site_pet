@@ -17,15 +17,13 @@ def index(request):
         else:
             members = role.members.order_by('name').all()
         roles.append({'role': role.name_plural, 'members': members})
-    context = {'roles': roles, 'name': 'members.index'}
-    return render(request, 'members/index.html', context)
+    return render(request, 'members/index.html', {'roles': roles, 'name': 'members.index'})
 
 
 @login_required
 def add_member(request):
     if request.method == 'POST':
         form = NewMemberForm(request.POST)
-
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
@@ -48,14 +46,9 @@ def add_member(request):
             user.save()
             member.save()
             return redirect(reverse('staff.index'))
-
-        context = {'name': 'members.add_member', 'form': form}
-        return render(request, 'members/add_member.html', context, status=400)
-
+        return render(request, 'members/add_member.html', {'form': form}, status=400)
     else:
-        form = NewMemberForm()
-        context = {'name': 'members.add_member', 'form': form}
-        return render(request, 'members/add_member.html', context)
+        return render(request, 'members/add_member.html', {'form': NewMemberForm()})
 
 
 @login_required
@@ -79,14 +72,9 @@ def add_tutor(request):
             tutor.pet = Pet.objects.get(id=form.cleaned_data['pet'])
             tutor.save()
             return redirect(reverse('staff.index'))
-
-        context = {'name': 'members.add_tutor', 'form': form}
-        return render(request, 'members/add_tutor.html', context, status=400)
-
+        return render(request, 'members/add_tutor.html', {'form': form}, status=400)
     else:
-        form = TutorForm()
-        context = {'name': 'members.add_tutor', 'form': form}
-        return render(request, 'members/add_tutor.html', context)
+        return render(request, 'members/add_tutor.html', {'form': TutorForm()})
 
 
 @login_required
@@ -95,8 +83,7 @@ def all_tutors(request):
     for user in Group.objects.get(name='tutors').user_set.all():
         member = Member.objects.filter(user=user)[0]
         tutors.append((member.id, member.name, member.pet.__str__()))
-    json = {'data': tutors}
-    return JsonResponse(json, safe=False)
+    return JsonResponse({'data': tutors}, safe=False)
 
 
 @login_required
@@ -131,9 +118,7 @@ def edit_member(request):
             user.save()
             member.save()
             return redirect(reverse('staff.index'))
-        context = {'name': 'members.edit_member', 'form': form}
-        return render(request, 'members/edit_member.html', context, status=400)
+        return render(request, 'members/edit_member.html', {'form': form}, status=400)
     form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
                                    'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
-    context = {'name': 'members.edit_member', 'form': form}
-    return render(request, 'members/edit_member.html', context)
+    return render(request, 'members/edit_member.html', {'form': form})

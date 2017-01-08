@@ -1,11 +1,6 @@
-{% extends "base.html" %}
+{% extends "staff/base.html" %}
 
-{% block css %}
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/staff.css">
-{% endblock %}
-
-{% block content %}
+{% block staff_content %}
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -16,7 +11,6 @@
         </div>
         <div class="col-md-9">
             <h3>Posts</h3>
-            <a href="/blog/post/add" class="btn btn-sm btn-success">Adicionar</a>
             <table id="posts" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -29,7 +23,6 @@
                 </thead>
             </table>
             <h3>Membros</h3>
-            <a href="/members/member/add" class="btn btn-sm btn-success">Adicionar</a>
             <table id="members" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -46,9 +39,6 @@
 </div>
 {% endblock %}
 
-{% block js %}
-<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-<script src="{{ STATIC_URL }}js/table.js"></script>
+{% block staff_js %}
 <script src="{{ STATIC_URL }}js/staff/tutor_index.js"></script>
 {% endblock %}

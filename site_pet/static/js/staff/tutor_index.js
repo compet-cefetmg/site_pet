@@ -5,9 +5,7 @@ function initMembersDataTable(tableId, urlPrefix) {
         'language': {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json'
         },
-        // Renders title row with anchor tag
         'columnDefs': [
-        // Renders edit and remove buttons
             {
                 "targets": 4,
                 "data": null,
@@ -26,8 +24,16 @@ function initMembersDataTable(tableId, urlPrefix) {
                 "visible": false,
                 "searchable": false
             }
-        ]
+        ],
+        initComplete: function(){
+            var addMemberBtn = $($.parseHTML('<a>Adicionar</a>'));
+            addMemberBtn
+                .addClass('btn btn-primary add-btn')
+                .attr('href', '/members/member/add');
+            addMemberBtn.appendTo($('#members_filter'))
+        }
     });
+
 
     $('#'+tableId +' tbody').on('click', '.edit-btn', function() {
         var data = table.row($(this).parents('tr')).data();

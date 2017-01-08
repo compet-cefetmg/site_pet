@@ -5,9 +5,7 @@ function initDataTable(tableId, urlPrefix) {
         'language': {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json'
         },
-        // Renders title row with anchor tag
         'columnDefs': [
-        // Renders edit and remove buttons
             {
                 "targets": -1,
                 "data": null,
@@ -21,8 +19,20 @@ function initDataTable(tableId, urlPrefix) {
                         </button>
                         `;
                 }
-            }
-        ]
+            },
+            {
+                "targets": 0,
+                "visible": false,
+                "searchable": false
+            }  
+        ],
+        initComplete: function(){
+            var addBtn = $($.parseHTML('<a>Adicionar</a>'));
+            addBtn
+                .addClass('btn btn-primary add-btn')
+                .attr('href', urlPrefix + 'add');
+            addBtn.appendTo($('#'+tableId+'_filter'))
+        }
     });
 
     $('#'+tableId +' tbody').on('click', '.edit-btn', function() {

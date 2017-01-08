@@ -1,3 +1,3 @@
 $(function() {
-    initDataTable('posts', '/blog/post/');
+    initBlogDataTable('posts', '/blog/post/');
 });

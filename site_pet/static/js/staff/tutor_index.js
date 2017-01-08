@@ -41,8 +41,7 @@ function initMembersDataTable(tableId, urlPrefix) {
     });
 }
 
-
 $(function() {
-    initDataTable('posts', '/blog/post/');
+    initBlogDataTable('posts', '/blog/post/');
     initMembersDataTable('members', '/members/member/');
 });

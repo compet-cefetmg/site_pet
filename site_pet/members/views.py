@@ -82,7 +82,7 @@ def all_tutors(request):
     tutors = []
     for user in Group.objects.get(name='tutors').user_set.all():
         member = Member.objects.filter(user=user)[0]
-        tutors.append((member.id, member.name, member.pet.__str__()))
+        tutors.append((member.id, member.name, member.user.username, member.pet.__str__()))
     return JsonResponse({'data': tutors}, safe=False)
 
 

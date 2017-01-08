@@ -74,7 +74,9 @@ def add_tutor(request):
             return redirect(reverse('staff.index'))
         return render(request, 'members/add_tutor.html', {'form': form}, status=400)
     else:
-        return render(request, 'members/add_tutor.html', {'form': TutorForm()})
+        form = TutorForm()
+        form.fields['role'].disabled = True
+        return render(request, 'members/add_tutor.html', {'form': form})
 
 
 @login_required

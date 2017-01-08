@@ -13,9 +13,8 @@ def index(request):
     pet_id = request.GET.get('pet', '')
     if pet_id:
         pet = get_object_or_404(Pet, id=pet_id)
-        users = [member.user for member in pet.members.all()]
         posts = Post.objects.filter(
-            user__in=users).order_by('publish_date').all()
+            member__in=pet.members.all()).order_by('publish_date').all()
     else:
         posts = Post.objects.order_by('publish_date').all()
     context = {'posts': posts, 'name': 'blog.index'}

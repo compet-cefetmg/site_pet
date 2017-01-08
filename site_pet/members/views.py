@@ -34,7 +34,10 @@ def add_member(request):
             role = form.cleaned_data['role']
             
             user = User.objects.create_user(username, email, password)
-            user.groups.add(Group.objects.get(name='members'))
+            if MemberRole.objects.get(id=role).name == 'Tutor':
+                user.groups.add(Group.objects.get(name='tutors'))
+            else:
+                user.groups.add(Group.objects.get(name='members'))
             
             member = Member()
             member.user = user

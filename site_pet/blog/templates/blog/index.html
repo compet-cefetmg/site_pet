@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-sm-7 col-xs-12">
                         {% if not request.GET.pet %}
-                            <span>{{ post.user.pet }}</span>
+                            <span>{{ post.member.pet }}</span>
                         {% endif %}
                         <span>{{ post.publish_date }}</span>
                         <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user }}">

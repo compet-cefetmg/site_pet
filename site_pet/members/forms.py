@@ -30,6 +30,7 @@ class NewMemberForm(forms.Form):
 class EditMemberForm(forms.Form):
     name = forms.CharField(label='Nome', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='E-mail', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    photo = forms.ImageField(label='Foto', required=False)
     facebook_link = forms.CharField(label='Link do Facebook', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
     lattes_link = forms.CharField(label='Link do Lattes', widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
     old_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control'}))

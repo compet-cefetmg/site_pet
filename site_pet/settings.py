@@ -3,6 +3,8 @@ import sys
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 SECRET_KEY = 'secret-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -97,14 +99,18 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'static/'),
+    os.path.join(PROJECT_ROOT, 'static'),
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
+MEDIA_URL = '/media/'
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 

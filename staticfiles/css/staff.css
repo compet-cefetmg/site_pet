@@ -1,0 +1,21 @@
+.sidebar {
+    margin-top: 40px;
+}
+
+.edit-btn {
+    float: right;
+}
+
+.add-btn {
+  float: left;
+}
+
+@media(max-width:767px){
+    .remove-btn {
+        margin-top: 5px;
+    }
+}
+
+@media(min-width:768px){}
+@media(min-width:992px){}
+@media(min-width:1200px){}

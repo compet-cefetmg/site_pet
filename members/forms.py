@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.contrib.auth.models import User, Group
 
 
-class NewMemberForm(forms.Form):
+class MemberForm(forms.Form):
     name = forms.CharField(label='Nome', widget=forms.TextInput(
         attrs={'class': 'form-control'}))
     username = forms.CharField(
@@ -15,9 +15,7 @@ class NewMemberForm(forms.Form):
     email = forms.EmailField(
         label='E-mail', widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(
-        label='Senha', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    role = forms.ModelChoiceField(label='Papel', widget=forms.Select(attrs={
-                             'class': 'form-control'}), queryset=MemberRole.objects.all(), to_field_name='name')
+        label='Senha', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     def clean_username(self):
         data = self.cleaned_data['username']
@@ -30,6 +28,16 @@ class NewMemberForm(forms.Form):
         if User.objects.filter(email=data).exists():
             raise ValidationError('E-mail já cadastrado.')
         return data
+
+
+class NewMemberForm(MemberForm):
+    role = forms.ModelChoiceField(label='Papel', widget=forms.Select(attrs={
+                             'class': 'form-control'}), queryset=MemberRole.objects.all(), to_field_name='name')
+
+
+class TutorForm(MemberForm):
+    pet = forms.ModelChoiceField(label='PET', widget=forms.Select(attrs={
+                            'class': 'form-control'}), queryset=Pet.objects.all())
 
 
 class EditMemberForm(forms.Form):
@@ -50,8 +58,3 @@ class EditMemberForm(forms.Form):
         if User.objects.filter(email=data).exists() and self.data['old_email'] != data:
             raise ValidationError('E-mail já cadastrado.')
         return data
-
-
-class TutorForm(NewMemberForm):
-    pet = forms.ModelChoiceField(label='PET', widget=forms.Select(attrs={
-                            'class': 'form-control'}), queryset=Pet.objects.all())

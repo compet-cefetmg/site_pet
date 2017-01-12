@@ -11,6 +11,9 @@ def auth_login(request):
     if request.POST and form.is_valid:
         user = form.login(request)
         if user:
+            groups = [Group.objects.get(name='admin'), Group.objects.get(name='tutors'), Group.objects.get(name='members')]
+            if not groups[0] in user.groups.all() and not groups[1] in user.groups.all() and not groups[2] in user.groups.all():
+                return HttpResponse('Unauthorized', status=401)
             login(request, user)
             if 'next' in request.GET:
                 return redirect(request.GET['next'], permanent=True)
@@ -31,7 +34,9 @@ def index(request):
         return render(request, 'staff/admin_index.html', {'name': 'staff.index'})
     if Group.objects.get(name='tutors') in user_groups:
         return render(request, 'staff/tutors_index.html', {'name': 'staff.index'})
-    return render(request, 'staff/member_index.html', {'name': 'staff.index'})
+    if Group.objects.get(name='members') in user_groups:   
+        return render(request, 'staff/member_index.html', {'name': 'staff.index'})
+    return HttpResponse('Unauthorized', status=401)
 
 
 

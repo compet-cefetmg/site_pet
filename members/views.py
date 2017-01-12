@@ -32,19 +32,22 @@ def add_member(request):
             role = form.cleaned_data['role']
 
             user = User.objects.create_user(username, email, password)
-            if MemberRole.objects.get(id=role).name == 'Tutor':
-                user.groups.add(Group.objects.get(name='tutors'))
-            else:
-                user.groups.add(Group.objects.get(name='members'))
+            try:
+                if MemberRole.objects.get(id=role).name == 'Tutor':
+                    user.groups.add(Group.objects.get(name='tutors'))
+                else:
+                    user.groups.add(Group.objects.get(name='members'))
+                member = Member()
+                member.user = user
+                member.name = name
+                member.role = MemberRole.objects.get(id=role)
+                member.pet = Member.objects.filter(user=request.user)[0].pet
 
-            member = Member()
-            member.user = user
-            member.name = name
-            member.role = MemberRole.objects.get(id=role)
-            member.pet = Member.objects.filter(user=request.user)[0].pet
+                user.save()
+                member.save()
+            except:
+                user.delete()
 
-            user.save()
-            member.save()
             return redirect(reverse('staff.index'))
         return render(request, 'members/add_member.html', {'form': form}, status=400)
     else:
@@ -60,22 +63,26 @@ def add_tutor(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             name = form.cleaned_data['name']
-
+            
             user = User.objects.create_user(username, email, password)
-            user.groups.add(Group.objects.get(name='tutors'))
-            user.save()
+            try:
+                user.groups.add(Group.objects.get(name='tutors'))
 
-            tutor = Member()
-            tutor.name = name
-            tutor.user = user
-            tutor.role = MemberRole.objects.get(name='Tutor')
-            tutor.pet = Pet.objects.get(id=form.cleaned_data['pet'])
-            tutor.save()
+                tutor = Member()
+                tutor.name = name
+                tutor.user = user
+                tutor.role = MemberRole.objects.get(name='Tutor')
+                tutor.pet = form.cleaned_data['pet']
+
+                user.save()
+                tutor.save() 
+            except:
+                user.delete()
+
             return redirect(reverse('staff.index'))
         return render(request, 'members/add_tutor.html', {'form': form}, status=400)
     else:
         form = TutorForm()
-        form.fields['role'].disabled = True
         return render(request, 'members/add_tutor.html', {'form': form})
 
 
@@ -98,6 +105,8 @@ def all_members(request):
 
 @login_required
 def edit_member(request):
+    if Group.objects.get(name='admin') in request.user.groups.all():
+        return HttpResponse('admin')
     member = request.user.member
     if request.method == 'POST':
         form = EditMemberForm(request.POST, request.FILES)

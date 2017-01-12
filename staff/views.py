@@ -29,6 +29,7 @@ def auth_logout(request):
 
 
 def index(request):
+    messages.error(request, 'Tutor adicionado com sucesso.')
     user_groups = request.user.groups.all()
     if Group.objects.get(name='admin') in user_groups:
         return render(request, 'staff/admin_index.html', {'name': 'staff.index'})

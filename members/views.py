@@ -4,6 +4,7 @@ from .models import *
 from django.contrib.auth.models import User, Group
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 def index(request):
@@ -75,10 +76,11 @@ def add_tutor(request):
                 tutor.pet = form.cleaned_data['pet']
 
                 user.save()
-                tutor.save() 
+                tutor.save()
+                messages.success(request, 'Tutor adicionado com sucesso.')
             except:
                 user.delete()
-
+                messages.error(request, 'Não foi possível adicionar o tutor.')
             return redirect(reverse('staff.index'))
         return render(request, 'members/add_tutor.html', {'form': form}, status=400)
     else:

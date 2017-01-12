@@ -27,8 +27,8 @@ def auth_logout(request):
 
 def index(request):
     user_groups = request.user.groups.all()
-    if Group.objects.get(name='dirgrad') in user_groups:
-        return render(request, 'staff/dirgrad_index.html', {'name': 'staff.index'})
+    if Group.objects.get(name='admin') in user_groups:
+        return render(request, 'staff/admin_index.html', {'name': 'staff.index'})
     if Group.objects.get(name='tutors') in user_groups:
         return render(request, 'staff/tutors_index.html', {'name': 'staff.index'})
     return render(request, 'staff/member_index.html', {'name': 'staff.index'})

@@ -127,10 +127,10 @@ def edit_member(request):
 
 @login_required
 def edit_member_role(request):
-    dirgrad = Group.objects.get(name='dirgrad')
+    admin = Group.objects.get(name='admin')
     tutors = Group.objects.get(name='tutors')
-    if dirgrad in request.user.groups.all():
-        return HttpResponse('dirgrad')
+    if admin in request.user.groups.all():
+        return HttpResponse('admin')
     elif tutors in request.user.groups.all():
         return HttpResponse('tutor')
     return HttpResponse('not allowed')

@@ -16,8 +16,8 @@ class NewMemberForm(forms.Form):
         label='E-mail', widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(
         label='Senha', widget=forms.TextInput(attrs={'class': 'form-control'}))
-    role = forms.ChoiceField(label='Papel', widget=forms.Select(attrs={
-                             'class': 'form-control'}), choices=[(x.id, x.name) for x in MemberRole.objects.all()])
+    role = forms.ModelChoiceField(label='Papel', widget=forms.Select(attrs={
+                             'class': 'form-control'}), queryset=MemberRole.objects.all(), to_field_name='name')
 
     def clean_username(self):
         data = self.cleaned_data['username']
@@ -53,5 +53,5 @@ class EditMemberForm(forms.Form):
 
 
 class TutorForm(NewMemberForm):
-    pet = forms.ChoiceField(label='PET', widget=forms.Select(attrs={
-                            'class': 'form-control'}), choices=[(p.id, p.__str__()) for p in Pet.objects.all()])
+    pet = forms.ModelChoiceField(label='PET', widget=forms.Select(attrs={
+                            'class': 'form-control'}), queryset=Pet.objects.all())

@@ -65,9 +65,9 @@ WSGI_APPLICATION = 'site_pet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pet_db',
-        'USER': 'root',
-        'PASSWORD': '123456',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
         'HOST': '',
         'PORT': '',
     }

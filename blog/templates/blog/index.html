@@ -13,7 +13,7 @@
             <div class="post">
                 <div class="panel-body">
                     <div class="col-sm-5 col-xs-12">
-                        <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user.member.pet.id }}" class="hidden-xs">
+                        <a href="{% url 'blog.post' id=post.id %}?pet={{ post.member.pet.id }}" class="hidden-xs">
                             <img class="img-responsive" src="{{ MEDIA_URL }}{{ post.thumbnail }}">
                         </a>
                     </div>

@@ -1,26 +1,30 @@
-.post {
+.posts .post {
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;
 }
 
-.post a {
+.posts .post:last-child {
+    border: 0;
+}
+
+.posts .post a {
     text-decoration: none;
     color: #333;
 }
 
-.post a:hover {
+.posts .post a:hover {
     color: #000;
 }
 
-.post p {
+.posts .post p {
     margin-top: 10px;
 }
 
-.post div span {
+.posts .post div span {
     margin-right: 20px;
 }
 
-.post .info {
+.posts .post .info {
     font-size: 13px;
     margin-bottom: 25px;
 }

@@ -1,7 +1,7 @@
 # site-pet
 ### Ambiente virtual
 Para executar a aplicação, é recomendada a utilização de um ambiente virtual, por meio do `virtualenvwrapper`.
-Após instalar o `virtualenvwrapper`, faça o seguinte cvomando para criar um ambiente virtual:
+Após instalar o `virtualenvwrapper`, faça o seguinte comando para criar um ambiente virtual:
 ```
 mkvirtualenv -p python3 site-pet
 ```
@@ -18,12 +18,15 @@ pip install -r requirements.txt
 ```
 
 ### Variáveis de ambiente
-Adicionar as variáveis de ambiente ao arquivo `~/.virtualenvs/site-pet/bin/activate`, substituindo pelas informações da sua conexão ao banco de dados.
+Adicione a variável de ambiente `DATABASE_URL` ao arquivo `~/.virtualenvs/site-pet/bin/activate`, substituindo pelas informações da sua conexão ao banco de dados. Exemplo:
 ```
-export DATABASE_NAME='database-name'
-export DATABASE_USER='database-user'
-export DATABASE_PASSWORD='database-password'
-export SECRET_KEY='django-secret-key'
+export DATABASE_URL='mysql://<user>:<password>@localhost:3306/<database>'
+```
+
+### Preparação do banco de dados
+Execute o seguinte comando para criar as relações no seu banco de dados local:
+```
+./manage.py migrate
 ```
 
 ### Execução

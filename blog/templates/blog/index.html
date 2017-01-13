@@ -33,7 +33,9 @@
         </div>
     </div>
     {% empty %}
-    <p>Esse PET ainda não possui nenhum post!</p>
+    <div class="col-md-12">
+        <p class="no-posts-message">Este PET ainda não possui nenhum post!</p>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

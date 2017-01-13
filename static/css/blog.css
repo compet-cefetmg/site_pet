@@ -24,3 +24,8 @@
     font-size: 13px;
     margin-bottom: 25px;
 }
+
+.no-posts-message {
+    margin-top: 50px;
+    text-align: center;
+}

@@ -1,6 +1,6 @@
-function initMembersDataTable(tableId, urlPrefix) {
+function initMembersDataTable(tableId) {
     var table = $('#'+tableId).DataTable({
-        'sAjaxSource': urlPrefix + 'all',
+        'sAjaxSource': '/blog/post' + 'all',
         'dom': 'ft',
         'language': {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json'
@@ -37,11 +37,11 @@ function initMembersDataTable(tableId, urlPrefix) {
 
     $('#'+tableId +' tbody').on('click', '.edit-btn', function() {
         var data = table.row($(this).parents('tr')).data();
-        window.location.href = urlPrefix + data[0] + '/edit';
+        window.location.href = '/blog/post' + data[0] + '/edit';
     });
 }
 
 $(function() {
-    initBlogDataTable('posts', '/blog/post/');
+    initBlogDataTable();
     initMembersDataTable('members', '/members/member/');
 });

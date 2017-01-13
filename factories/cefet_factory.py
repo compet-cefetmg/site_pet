@@ -1,9 +1,5 @@
 import factory
 from cefet.models import *
-from faker import Faker
-
-
-faker = Faker()
 
 
 class CampusFactory(factory.django.DjangoModelFactory):
@@ -12,7 +8,7 @@ class CampusFactory(factory.django.DjangoModelFactory):
         model = Campus
 
     id = factory.Sequence(lambda n: n+1)
-    location = faker.city()
+    location = factory.Sequence(lambda n: 'City {0}'.format(n+1))
 
 
 class CourseFactory(factory.django.DjangoModelFactory):
@@ -20,7 +16,7 @@ class CourseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Course
 
-    name = faker.name()
+    name = factory.Sequence(lambda n: 'Course {0}'.format(n+1))
     campus = factory.SubFactory(CampusFactory)
 
 

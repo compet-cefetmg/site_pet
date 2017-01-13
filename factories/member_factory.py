@@ -1,11 +1,7 @@
 import factory
-from factories.user_factory import UserFactory
+from factories.auth_factory import UserFactory
 from factories.cefet_factory import PetFactory
 from members.models import Member, MemberRole
-from faker import Faker
-
-
-faker = Faker()
 
 
 class MemberRoleFactory(factory.django.DjangoModelFactory):
@@ -13,8 +9,8 @@ class MemberRoleFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = MemberRole
 
-    name = faker.name()
-    name_plural = faker.name()
+    name = factory.Sequence(lambda n: 'Role {0}'.format(n + 1))
+    name_plural = factory.Sequence(lambda n: 'Role {0} plural'.format(n + 1))
 
 
 class MemberFactory(factory.django.DjangoModelFactory):
@@ -23,6 +19,6 @@ class MemberFactory(factory.django.DjangoModelFactory):
         model = Member
 
     user = factory.SubFactory(UserFactory)
-    name = faker.name()
+    name = factory.Sequence(lambda n: 'Member {0}'.format(n + 1))
     pet = factory.SubFactory(PetFactory)
     role = factory.SubFactory(MemberRoleFactory)

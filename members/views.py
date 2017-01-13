@@ -34,20 +34,23 @@ def add_member(request):
 
             user = User.objects.create_user(username, email, password)
             try:
-                if MemberRole.objects.get(id=role).name == 'Tutor':
+                import pdb; pdb.set_trace()
+                if role.name == 'Tutor':
                     user.groups.add(Group.objects.get(name='tutors'))
                 else:
                     user.groups.add(Group.objects.get(name='members'))
                 member = Member()
                 member.user = user
                 member.name = name
-                member.role = MemberRole.objects.get(id=role)
-                member.pet = Member.objects.filter(user=request.user)[0].pet
+                member.role = role
+                member.pet = request.user.member.pet
 
                 user.save()
                 member.save()
+                messages.success(request, 'Membro adicionado com sucesso.')
             except:
                 user.delete()
+                messages.error(request, 'Não foi possível adicionar o membro.')
 
             return redirect(reverse('staff.index'))
         return render(request, 'members/add_member.html', {'form': form}, status=400)
@@ -99,9 +102,8 @@ def all_tutors(request):
 
 @login_required
 def all_members(request):
-    member = Member.objects.filter(user=request.user)[0]
     json = {'data': [(x.id, x.name, x.user.get_username(
-    ), x.user.email, x.role.name) for x in member.pet.members.all()]}
+    ), x.user.email, x.role.name) for x in request.user.member.pet.members.all()]}
     return JsonResponse(json, safe=False)
 
 

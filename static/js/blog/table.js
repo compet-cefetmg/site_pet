@@ -1,6 +1,6 @@
 function initBlogDataTable() {
     var table = $('#posts').DataTable({
-        'sAjaxSource': '/blog/' + 'all',
+        'sAjaxSource': '/blog/all',
         'dom': 'ft',
         'language': {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Portuguese-Brasil.json'

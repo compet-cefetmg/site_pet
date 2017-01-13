@@ -2,8 +2,19 @@
     margin-top: 40px;
 }
 
-.edit-btn {
+.edit-btn,
+.remove-btn {
     float: right;
+    margin-left: 10px;
+
+}
+
+.remove-btn {
+    color: #c9302c;
+}
+
+.remove-btn:hover {
+    color: #a0232b;
 }
 
 .add-btn {

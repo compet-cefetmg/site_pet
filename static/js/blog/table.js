@@ -7,17 +7,22 @@ function initBlogDataTable(tableId, urlPrefix) {
         },
         'columnDefs': [
             {
-                "targets": -1,
+                "targets": 3,
                 "data": null,
                 'render': function (data, type, row, meta) {
-                    return `
-                        <button class="btn btn-xs btn-primary edit-btn" class="edit-btn">
-                            <i class="fa fa-pencil"></i> Editar
-                        </button>
-                        <button class="btn btn-xs btn-danger remove-btn">
-                            <i class="fa fa-trash"></i> Remover
-                        </button>
-                        `;
+                    var editPostBtn = $($.parseHTML('<a></a>'));
+                    editPostBtn
+                        .attr('href', '/blog/post/' + data[0] + '/edit')
+                        .attr('title', 'Editar post')
+                        .addClass('edit-btn')
+                        .append($.parseHTML('<i class="fa fa-pencil"></i>'));
+                    var deletePostBtn = $($.parseHTML('<a></a>'));
+                    deletePostBtn
+                        .attr('title', 'Remover post')
+                        .attr('href', '#')
+                        .addClass('remove-btn')
+                        .append($.parseHTML('<i class="fa fa-trash-o"></i>'));
+                    return data[3] + editPostBtn[0].outerHTML + deletePostBtn[0].outerHTML 
                 }
             },
             {
@@ -33,11 +38,6 @@ function initBlogDataTable(tableId, urlPrefix) {
                 .attr('href', urlPrefix + 'add');
             addBtn.appendTo($('#'+tableId+'_filter'))
         }
-    });
-
-    $('#'+tableId +' tbody').on('click', '.edit-btn', function() {
-        var data = table.row($(this).parents('tr')).data();
-        window.location.href = urlPrefix + data[0] + '/edit';
     });
 
     $('#'+tableId +' tbody').on('click', '.remove-btn', function() {

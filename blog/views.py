@@ -30,7 +30,7 @@ def post(request, id):
 
 def all(request):
     posts = [(p.id, p.title, p.member.name, p.publish_date.strftime("%d/%m/%y"))
-             for p in Post.objects.all()]
+             for p in Post.objects.filter(member__in=request.user.member.pet.members.all()).all()]
     json = {'data': posts}
     return JsonResponse(json, safe=False)
 

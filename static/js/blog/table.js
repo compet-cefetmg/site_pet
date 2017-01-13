@@ -53,11 +53,12 @@ function initBlogDataTable(tableId, urlPrefix) {
             showLoaderOnConfirm: true
         }, function() {
             $.ajax({
-                type: 'DELETE',
-                data: data[0],
-                url: urlPrefix + 'delete',
-                sucess: function() {
+                type: 'POST',
+                data: {'id': data[0]},
+                url: urlPrefix + 'delete/',
+                success: function() {
                     swal('Sucesso!', 'Removido com sucesso.', 'success');
+                    table.ajax.reload();
                 },
                 error: function() {
                     swal('Erro!', 'Não foi possível remover.', 'error');

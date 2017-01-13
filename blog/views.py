@@ -6,6 +6,7 @@ from cefet.models import Pet
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.contrib import messages
 
 
 def index(request):
@@ -49,3 +50,27 @@ def add_post(request):
         form = PostForm()
         context = {'name': 'blog.add_post', 'form': form}
         return render(request, 'blog/form.html', context)
+
+
+@login_required
+def edit_post(request, id):
+    post = get_object_or_404(Post, id=id)
+    if post.member.pet != request.user.member.pet:
+        return HttpResponse('Unauthorized', status=400)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save()
+            messages.success(request, 'Post editado com sucesso.')
+            return redirect(reverse('staff.index'))
+        return render(request, 'blog/form.html', {'form': form}, status=400)
+    return render(request, 'blog/form.html', {'form': PostForm(instance=post)})
+
+
+@login_required
+def delete_post(request):
+    post = get_object_or_404(Post, id=request.POST.get('id'))
+    if post.member.pet != request.user.member.pet or request.method != 'POST':
+        return HttpResponse('Unauthorized', status=400)
+    post.delete()
+    return HttpResponse('OK', status=200)

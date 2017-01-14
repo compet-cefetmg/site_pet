@@ -119,7 +119,7 @@ class MemberTestCase(TestCase):
         self.assertEqual(member.user.email, info['email'])
         self.assertEqual(member.role.name, 'tutor')
 
-    def test_all_tutors_json(self):
+    def test_all_tutors_json_format_and_content(self):
         request_member = MemberFactory(role=self.roles['admin'])
         self.client.login(username=request_member.user.username, password='password')
         
@@ -131,7 +131,7 @@ class MemberTestCase(TestCase):
             self.assertEqual(4, len(item))
             self.assertEqual(Member.objects.get(id=item[0]).role.name, 'tutor')
 
-    def test_all_members_json(self):
+    def test_all_members_json_format_and_content(self):
         request_member = MemberFactory(role=self.roles['tutor'])
         self.client.login(username=request_member.user.username, password='password')
         
@@ -143,3 +143,17 @@ class MemberTestCase(TestCase):
         for item in response.json()['data']:
             self.assertEqual(5, len(item))
             self.assertEqual(Member.objects.get(id=item[0]).pet, request_member.pet)
+
+    def test_only_admin_should_access_tutors_json(self):
+        for key, value in self.roles.items():
+            member = MemberFactory(role=value)
+            self.client.login(username=member.user.username, password='password')
+            response = self.client.post(reverse('members.all_tutors'))
+            self.assertEqual(response.status_code, 200 if key in ['admin'] else 302)
+
+    def test_only_admin_and_tutor_should_access_members_json(self):
+        for key, value in self.roles.items():
+            member = MemberFactory(role=value)
+            self.client.login(username=member.user.username, password='password')
+            response = self.client.post(reverse('members.all_members'))
+            self.assertEqual(response.status_code, 200 if key in ['admin', 'tutor'] else 302)

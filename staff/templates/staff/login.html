@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -13,7 +17,7 @@
             <form action="{% url 'staff.auth_login' %}?next={{ request.GET.next }}" method="post">
                 {% csrf_token %}
                 {% if error %}
-                    <span class="help-block">{{ error }}</span>
+                    <span class="error help-block">{{ error }}</span>
                 {% endif %}
                 <div class="form-group">
                     <h4><strong>Usuário<strong></h4>

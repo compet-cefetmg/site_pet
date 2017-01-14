@@ -10,7 +10,8 @@ class MemberRoleFactory(factory.django.DjangoModelFactory):
         model = MemberRole
 
     name = factory.Sequence(lambda n: 'Role {0}'.format(n + 1))
-    name_plural = factory.Sequence(lambda n: 'Role {0} plural'.format(n + 1))
+    verbose_name = factory.Sequence(lambda n: 'Verbose {0} plural'.format(n + 1))
+    verbose_name_plural = factory.Sequence(lambda n: 'Verbose {0} plural'.format(n + 1))
 
 
 class MemberFactory(factory.django.DjangoModelFactory):

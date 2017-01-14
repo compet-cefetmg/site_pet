@@ -7,15 +7,16 @@ from cefet.models import Pet
 
 
 class MemberRole(models.Model):
-    name = models.CharField('Nome', max_length=255, unique=True)
-    name_plural = models.CharField('Plural', max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True)
+    verbose_name = models.CharField(max_length=255, unique=True)
+    verbose_name_plural = models.CharField(max_length=255, unique=True)
 
     class Meta:
-        verbose_name = 'Papel do membro'
-        verbose_name_plural = 'Papéis dos membros'
+        verbose_name = 'Função do membro'
+        verbose_name_plural = 'Funções dos membros'
 
     def __str__(self):
-        return self.name
+        return self.verbose_name.capitalize()
 
 
 def get_image_path(instance, filename):
@@ -29,7 +30,7 @@ class Member(models.Model):
     photo = models.ImageField('Foto', max_length=255, upload_to=get_image_path, blank=True)
     facebook_link = models.CharField('Link do Facebook', max_length=255, blank=True)
     lattes_link = models.CharField('Link do Lattes', max_length=255, blank=True)
-    role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members', verbose_name='Papel')
+    role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members', verbose_name='Função')
 
     def __str__(self):
         return self.name

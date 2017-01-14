@@ -31,8 +31,8 @@ class MemberForm(forms.Form):
 
 
 class NewMemberForm(MemberForm):
-    role = forms.ModelChoiceField(label='Papel', widget=forms.Select(attrs={
-                             'class': 'form-control'}), queryset=MemberRole.objects.all(), to_field_name='name')
+    role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={
+                             'class': 'form-control'}), queryset=MemberRole.objects.all())
 
 
 class TutorForm(MemberForm):
@@ -57,4 +57,9 @@ class EditMemberForm(forms.Form):
         data = self.cleaned_data['email']
         if User.objects.filter(email=data).exists() and self.data['old_email'] != data:
             raise ValidationError('E-mail já cadastrado.')
-        return data
+        return data    
+
+
+class MemberRoleForm(forms.Form):
+    role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={'class': 'form-control'}), queryset=MemberRole.objects.all())
+

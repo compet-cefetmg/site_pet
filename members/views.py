@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_list_or_404, get_object_or_404, redirect, reverse
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
 from .models import *
 from django.contrib.auth.models import User, Group
 from .forms import *
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 
 
@@ -22,6 +22,7 @@ def index(request):
 
 
 @login_required
+@user_passes_test(lambda user: user.member.role.name == 'tutor')
 def add_member(request):
     if request.method == 'POST':
         form = NewMemberForm(request.POST)
@@ -34,8 +35,7 @@ def add_member(request):
 
             user = User.objects.create_user(username, email, password)
             try:
-                import pdb; pdb.set_trace()
-                if role.name == 'Tutor':
+                if role.name == 'tutor':
                     user.groups.add(Group.objects.get(name='tutors'))
                 else:
                     user.groups.add(Group.objects.get(name='members'))
@@ -75,7 +75,7 @@ def add_tutor(request):
                 tutor = Member()
                 tutor.name = name
                 tutor.user = user
-                tutor.role = MemberRole.objects.get(name='Tutor')
+                tutor.role = MemberRole.objects.get(name='tutor')
                 tutor.pet = form.cleaned_data['pet']
 
                 user.save()
@@ -103,12 +103,12 @@ def all_tutors(request):
 @login_required
 def all_members(request):
     json = {'data': [(x.id, x.name, x.user.get_username(
-    ), x.user.email, x.role.name) for x in request.user.member.pet.members.all()]}
+    ), x.user.email, x.role.verbose_name) for x in request.user.member.pet.members.all()]}
     return JsonResponse(json, safe=False)
 
 
 @login_required
-def edit_member(request):
+def edit_personal_info(request):
     if Group.objects.get(name='admin') in request.user.groups.all():
         return HttpResponse('admin')
     member = request.user.member
@@ -123,27 +123,74 @@ def edit_member(request):
 
             user = User.objects.get(id=request.user.id)
             user.email = email
-            photo.name = user.username
 
             member.name = name
-            member.facebook_link = facebook_link
-            member.lattes_link = lattes_link
-            member.photo = photo
+            if facebook_link:
+                member.facebook_link = facebook_link
+            if lattes_link:
+                member.lattes_link
+            if photo:
+                photo.name = user.username
+                member.photo = photo
 
             user.save()
             member.save()
-            return redirect(reverse('staff.index'))
-        return render(request, 'members/edit_member.html', {'form': form}, status=400)
+            messages.success(request, 'Informações atualizadas com sucesso.')
+            return redirect(reverse('members.edit_personal_info'))
+        return render(request, 'members/edit_personal_info.html', {'form': form}, status=400)
     form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
                                    'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
-    return render(request, 'members/edit_member.html', {'form': form})
+    return render(request, 'members/edit_personal_info.html', {'form': form})
 
 @login_required
-def edit_member_role(request):
+def edit_member(request, username):
     admin = Group.objects.get(name='admin')
     tutors = Group.objects.get(name='tutors')
+    members = Group.objects.get(name='members')
+    user = get_object_or_404(User, username=username)
+    member = user.member
+    
     if admin in request.user.groups.all():
         return HttpResponse('admin')
-    elif tutors in request.user.groups.all():
-        return HttpResponse('tutor')
-    return HttpResponse('not allowed')
+    
+    if tutors in request.user.groups.all():
+        if request.method == 'POST':
+            form = MemberRoleForm(request.POST)
+            
+            if form.is_valid():
+                member.role = form.cleaned_data['role']
+
+                if form.cleaned_data['role'].name == 'tutor':
+                    user.is_active = True
+                    if tutors not in user.groups.all():
+                        user.groups.add(tutors)
+                    if members in user.groups.all():
+                        user.groups.remove(members)
+                
+                elif form.cleaned_data['role'].name == 'ex-member':
+                    user.is_active = False
+                    if tutors in user.groups.all():
+                        user.groups.remove(tutors)
+                    if members in user.groups.all():
+                        user.groups.remove(members)
+                
+                else:
+                    user.is_active = True
+                    if tutors in user.groups.all():
+                        user.groups.remove(tutors)
+                    if members not in user.groups.all():
+                        user.groups.add(members)
+
+                member.save()
+                user.save()
+                
+                messages.success(request, 'Informações atualizadas com sucesso.')
+                return redirect(reverse('staff.index'))
+
+        form = MemberRoleForm(initial={'role': member.role})
+        return render(request, 'members/edit_member.html', {'form': form})
+    
+    if request.user.is_authenticated():
+        return HttpResponse('Você não é administrador ou tutor de algum PET e, portanto, não pode acessar esta página.', status=403)
+    
+    return redirect(reverse('staff.auth_login', kwargs={'next': '/members/' + username + '/edit/'}))

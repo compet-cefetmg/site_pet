@@ -1,10 +1,10 @@
 from django.test import TestCase
 from django.test import Client
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
-from factories.member_factory import MemberFactory
+from factories.member_factory import *
 from factories.auth_factory import *
 from factories.blog_factory import PostFactory
 
@@ -15,11 +15,10 @@ faker = Faker()
 class PostTestCase(TestCase):
 
     def setUp(self):
-        AdminGroupFactory()
-        TutorsGroupFactory()
-        members_group = MembersGroupFactory()
-        self.member = MemberFactory()
-        self.member.user.groups.add(members_group)
+        self.roles = {}
+        for role in ['admin', 'tutor', 'scholar', 'volunteer', 'contributor', 'ex-member']:
+            self.roles[role] = MemberRoleFactory(name=role)
+        self.member = MemberFactory(role=self.roles['scholar'])
         self.posts = PostFactory.create_batch(5)
 
     def test_index_page_should_return_200(self):

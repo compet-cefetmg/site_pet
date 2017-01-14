@@ -18,4 +18,6 @@ class PostForm(ModelForm):
         }
         help_texts = {
             'text_call': 'A descrição do post será exibida na página inicial.',
+            'publish_as_team': 'Ao postar em nome da equipe, a autoria do post será atribuida ao PET. Ainda será possível saber qual membro criou o post.',
+            'thumbnail': 'Imagem que aparecerá ao lado do post na tela inicial.'
         }

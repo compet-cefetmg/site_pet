@@ -17,15 +17,14 @@
             {% for field in form %}
             <div class="col-md-{% if field.field.label == 'Conteúdo' %}12{% else %}7{% endif %}">
                 <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <h4><strong>{{ field.label }}<strong></h4>
+                    <h4><strong>{{ field.label }}</strong></h4>
                     {% if field.errors %}
                         {% for error in field.errors %}
                             <span class="help-block">{{ error }}</span>
                         {% endfor %}
                     {% endif %}
-                    {{ field.help_text }}
+                    <span class="help-block">{{ field.help_text }}</span>
                     {% if field.field.label == 'Postar em nome da equipe' %}
-                    <span class="help-block">Ao postar em nome da equipe, a autoria do post será atribuida ao PET.<br>Ainda será possível saber qual membro criou o post.</span>
                     <div class="radio">
                         {{ field.0 }}
                     </div>

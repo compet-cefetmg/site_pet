@@ -127,12 +127,26 @@ def edit_personal_info(request):
 @login_required
 @user_passes_test(lambda user: user.member.role.name in ['admin', 'tutor'])
 def edit_member(request, username):
-    user = get_object_or_404(User, username=username)
-    member = user.member
+    member = get_object_or_404(User, username=username).member
 
     if request.user.member.role.name == 'admin':
-        return HttpResponse('admin')
-
+        if member.role.name != 'tutor':
+            return HttpResponseForbidden(username + ' não é um tutor.')
+        if request.method == 'POST':
+            form = EditTutorForm(request.POST)
+            
+            if form.is_valid():
+                member.pet = form.cleaned_data['pet']
+                member.user.is_active = form.cleaned_data['is_active']
+                member.save()
+                member.user.save()
+                
+                messages.success(request, 'Informações atualizadas com sucesso.')    
+                return redirect(reverse('staff.index'))
+            return render(request, 'members/edit_tutor.html', {'form': form}, status=400)
+        form = EditTutorForm(initial={'pet': member.pet, 'is_active': member.user.is_active})
+        return render(request, 'members/edit_tutor.html', {'form': form})
+    
     if request.user.member.role.name == 'tutor':
         if request.method == 'POST':
             form = MemberRoleForm(request.POST)
@@ -141,16 +155,18 @@ def edit_member(request, username):
                 member.role = form.cleaned_data['role']
 
                 if form.cleaned_data['role'].name == 'ex-member':
-                    user.is_active = False
+                    member.user.is_active = False
                 else:
-                    user.is_active = True
+                    member.user.is_active = True
                 member.role = form.cleaned_data['role']
 
                 member.save()
-                user.save()
+                member.user.save()
+                
                 messages.success(request, 'Informações atualizadas com sucesso.')
                 return redirect(reverse('staff.index'))
-
+            return render(request, 'members/edit_member.html', {'form': form}, status=400)
+        
         form = MemberRoleForm(initial={'role': member.role})
         return render(request, 'members/edit_member.html', {'form': form})
 

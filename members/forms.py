@@ -40,6 +40,12 @@ class TutorForm(MemberForm):
                             'class': 'form-control'}), queryset=Pet.objects.all())
 
 
+class EditTutorForm(forms.Form):
+    pet = forms.ModelChoiceField(label='PET', widget=forms.Select(attrs={
+                            'class': 'form-control'}), queryset=Pet.objects.all())
+    is_active = forms.BooleanField(label='Tutor ativo', required=False)
+
+
 class EditMemberForm(forms.Form):
     name = forms.CharField(label='Nome', widget=forms.TextInput(
         attrs={'class': 'form-control'}))

@@ -32,7 +32,7 @@ class MemberForm(forms.Form):
 
 class NewMemberForm(MemberForm):
     role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={
-                             'class': 'form-control'}), queryset=MemberRole.objects.all())
+                             'class': 'form-control'}), queryset=MemberRole.objects.exclude(name='admin').all())
 
 
 class TutorForm(MemberForm):
@@ -61,5 +61,5 @@ class EditMemberForm(forms.Form):
 
 
 class MemberRoleForm(forms.Form):
-    role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={'class': 'form-control'}), queryset=MemberRole.objects.all())
+    role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={'class': 'form-control'}), queryset=MemberRole.objects.exclude(name='admin').all())
 

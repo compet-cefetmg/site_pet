@@ -122,7 +122,6 @@ def edit_personal_info(request):
             return redirect(reverse('members.edit_personal_info'))
         
         return render(request, 'members/edit_personal_info.html', {'form': form}, status=400)
-    
     form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
                                    'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
     return render(request, 'members/edit_personal_info.html', {'form': form})

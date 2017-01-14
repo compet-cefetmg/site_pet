@@ -29,10 +29,11 @@ class Command(BaseCommand):
         Pet(course=course4).save()
         Pet(course=course5).save()
 
-        MemberRole(name='tutor').save()
-        MemberRole(name='scholar').save()
-        MemberRole(name='contributor').save()
-        MemberRole(name='ex-member').save()
-        MemberRole(name='volunteer').save()
+        MemberRole(name='tutor', verbose_name='Tutor', verbose_name_plural='Tutores').save()
+        MemberRole(name='admin', verbose_name='Administrador', verbose_name_plural='Administradores').save()
+        MemberRole(name='scholar', verbose_name='Bolsista', verbose_name_plural='Bolsistas').save()
+        MemberRole(name='contributor', verbose_name='Colaborador', verbose_name_plural='Colaboradores').save()
+        MemberRole(name='ex-member', verbose_name='Ex-membro', verbose_name_plural='Ex-membros').save()
+        MemberRole(name='volunteer', verbose_name='Voluntário', verbose_name_plural='Voluntários').save()
 
         self.stdout.write(self.style.SUCCESS('Successfully loaded data.'))

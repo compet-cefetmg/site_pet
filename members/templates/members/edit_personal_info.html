@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/members.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 page-header">
+            <h2>Editar membro</h2>
+            <p>Aqui, você pode alterar suas informações pessoais.</p>
+        </div>
+        <div class="col-md-7">
+            {% include "messages.html" %}
+        </div>
+        <div class="col-md-7">
+            <form action="{% url 'members.edit_personal_info' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field == form.old_email %}
+                        {{ field.as_hidden }}
+                    {% else %}
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                            <h4><strong>{{ field.label }}<strong></h4>
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <span class="help-block">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                            {{ field }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <button class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^tutor/add/$', views.add_tutor, name='members.add_tutor'),
     url(r'^tutor/all/$', views.all_tutors, name='members.all_tutors'),
     url(r'^member/all/$', views.all_members, name='members.all_members'),
-    url(r'^member/edit/$', views.edit_member, name='members.edit_member'),
-    url(r'^[A-Za-z0-9]*/edit/$', views.edit_member_role, name='members.edit_member_role'),
+    url(r'^edit/me/$', views.edit_personal_info, name='members.edit_personal_info'),
+    url(r'^(?P<username>[A-Za-z0-9]+)/edit/$', views.edit_member, name='members.edit_member'),
 ]

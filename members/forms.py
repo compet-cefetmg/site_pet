@@ -51,7 +51,7 @@ class EditMemberForm(forms.Form):
     lattes_link = forms.CharField(label='Link do Lattes', widget=forms.TextInput(
         attrs={'class': 'form-control'}), required=False)
     old_email = forms.EmailField(
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
+        widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
 
     def clean_email(self):
         data = self.cleaned_data['email']

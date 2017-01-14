@@ -96,32 +96,29 @@ def all_members(request):
 
 @login_required
 def edit_personal_info(request):
-    if Group.objects.get(name='admin') in request.user.groups.all():
-        return HttpResponse('admin')
     member = request.user.member
     if request.method == 'POST':
         form = EditMemberForm(request.POST, request.FILES)
         if form.is_valid():
-            user = User.objects.get(id=request.user.id)
-            user.email = form.cleaned_data['email']
+            member.user.email = form.cleaned_data['email']
             member.name = form.cleaned_data['name']
-            
+
             if form.cleaned_data['facebook_link']:
                 member.facebook_link = form.cleaned_data['facebook_link']
-            
             if form.cleaned_data['lattes_link']:
                 member.lattes_link = form.cleaned_data['lattes_link']
-            
             if form.cleaned_data['photo']:
                 photo.name = user.username
                 member.photo = photo = form.cleaned_data['photo']
 
-            user.save()
+            member.user.save()
             member.save()
             messages.success(request, 'Informações atualizadas com sucesso.')
             return redirect(reverse('members.edit_personal_info'))
-        
+
+        messages.error(request, 'Não foi possível atualizar as informações.')
         return render(request, 'members/edit_personal_info.html', {'form': form}, status=400)
+
     form = EditMemberForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
                                    'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
     return render(request, 'members/edit_personal_info.html', {'form': form})

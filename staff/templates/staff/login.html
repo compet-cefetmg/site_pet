@@ -10,7 +10,7 @@
             <p>Se você é o tutor de algum PET e não possui acesso, entre em contato com a Diretoria de Graduação.</p>
         </div>
         <div class="col-sm-4 col-xs-8">
-            <form action="{% url 'staff.login' %}" method="post">
+            <form action="{% url 'staff.auth_login' %}?next={{ request.GET.next }}" method="post">
                 {% csrf_token %}
                 {% if error %}
                     <span class="help-block">{{ error }}</span>

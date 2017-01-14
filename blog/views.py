@@ -71,6 +71,6 @@ def edit_post(request, id):
 def delete_post(request):
     post = get_object_or_404(Post, id=request.POST.get('id'))
     if post.member.pet != request.user.member.pet or request.method != 'POST':
-        return HttpResponse('Unauthorized', status=400)
+        return HttpResponse('Você só pode remover posts de seu próprio PET.', status=403)
     post.delete()
     return HttpResponse('OK', status=200)

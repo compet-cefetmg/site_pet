@@ -86,7 +86,7 @@ class PostTestCase(TestCase):
         other_member = MemberFactory()
         self.client.login(username=other_member.user.username, password='password')
         response = self.client.post(reverse('blog.delete_post'), {'id': post.id})
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
 
     def test_json_should_have_data_attr_with_array_of_4_elements(self):
         self.client.login(username=self.member.user.username, password='password')

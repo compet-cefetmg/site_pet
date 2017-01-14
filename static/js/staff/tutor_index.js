@@ -13,7 +13,7 @@ function initMembersDataTable() {
                     var editRoleBtn = $($.parseHTML('<a></a>'));
                     editRoleBtn
                         .attr('href', '/members/' + data[2] + '/edit')
-                        .attr('title', 'Alterar papel')
+                        .attr('title', 'Alterar Função')
                         .addClass('edit-btn')
                         .append($.parseHTML('<i class="fa fa-pencil"></i>'));
                     return data[4] + editRoleBtn[0].outerHTML

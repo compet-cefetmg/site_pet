@@ -32,6 +32,7 @@ class MemberTestCase(TestCase):
                 member = MemberFactory(role=value)
                 self.client.login(username=member.user.username, password='password')
                 response = self.client.post(reverse('members.add_member'))
+                self.assertTrue(response.url.startswith('/staff/login'))
                 self.assertEqual(response.status_code, 302)
 
     def test_add_member_should_return_400_for_invalid_form(self):
@@ -69,12 +70,12 @@ class MemberTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
 
         self.assertTrue(User.objects.filter(username=info['username']).exists())
-        member = User.objects.get(username=info['username']).member
-        self.assertEqual(member.pet, request_member.pet)
-        self.assertEqual(member.user.username, info['username'])
-        self.assertEqual(member.name, info['name'])
-        self.assertEqual(member.user.email, info['email'])
-        self.assertEqual(member.role.id, info['role'])
+        new_member = User.objects.get(username=info['username']).member
+        self.assertEqual(new_member.pet, request_member.pet)
+        self.assertEqual(new_member.user.username, info['username'])
+        self.assertEqual(new_member.name, info['name'])
+        self.assertEqual(new_member.user.email, info['email'])
+        self.assertEqual(new_member.role.id, info['role'])
 
     def test_add_tutor_should_redirect_to_login_for_not_logged_user(self):
         response = self.client.get(reverse('members.add_tutor'))

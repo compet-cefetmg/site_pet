@@ -46,7 +46,7 @@ class EditTutorForm(forms.Form):
     is_active = forms.BooleanField(label='Tutor ativo', required=False)
 
 
-class EditMemberForm(forms.Form):
+class PersonalInfoForm(forms.Form):
     name = forms.CharField(label='Nome', widget=forms.TextInput(
         attrs={'class': 'form-control'}))
     email = forms.EmailField(

@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'cefet',
     'members',
     'staff',
+    'django_nose',
     'django_summernote',
     'sorl.thumbnail',
     'django.contrib.admin',
@@ -24,7 +25,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -111,3 +111,5 @@ SUMMERNOTE_CONFIG = {
     'lang': 'pt-BR',
     'width': '100%',
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

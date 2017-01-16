@@ -1,0 +1,2 @@
+#!/bin/bash
+exec ./manage.py test --with-coverage --cover-package=blog,members,cefet,staff --cover-html

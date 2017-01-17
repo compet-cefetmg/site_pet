@@ -35,6 +35,8 @@ def all(request):
 
 @login_required
 def add_post(request):
+    context = {'title': 'Novo post', 'action': reverse('blog.add_post')}
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
 
@@ -43,12 +45,14 @@ def add_post(request):
             post.member = request.user.member
             post.save()
 
-            messages.success(request, 'Post editado com sucesso.')
+            messages.success(request, 'Post adicionado com sucesso.')
             return redirect(reverse('staff.index'))
 
-        return render(request, 'blog/form.html', {'form': form}, status=400)
+        context['form'] = form
+        return render(request, 'blog/form.html', context, status=400)
 
-    return render(request, 'blog/form.html', {'form': PostForm()})
+    context['form'] = PostForm()
+    return render(request, 'blog/form.html', context)
 
 
 @login_required
@@ -58,6 +62,8 @@ def edit_post(request, id):
     if post.member.pet != request.user.member.pet:
         return HttpResponseForbidden('Você só pode editar posts de seu próprio PET.')
 
+    context = {'title': 'Editar post', 'action': reverse('blog.edit_post', kwargs={'id': id})}
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
 
@@ -66,9 +72,11 @@ def edit_post(request, id):
             messages.success(request, 'Post editado com sucesso.')
             return redirect(reverse('staff.index'))
 
-        return render(request, 'blog/form.html', {'form': form}, status=400)
+        context['form'] = form
+        return render(request, 'blog/form.html', context, status=400)
 
-    return render(request, 'blog/form.html', {'form': PostForm(instance=post)})
+    context['form'] = PostForm(instance=post)
+    return render(request, 'blog/form.html', context)
 
 
 @login_required

@@ -10,12 +10,12 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 page-header">
-            <h2>Novo post - {{ request.user.member.pet }}</h2>
+            <h2>{{ title }} - {{ request.user.member.pet }}</h2>
         </div>
-        <form action="{% url 'blog.add_post' %}" method="post" enctype="multipart/form-data">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
-            <div class="col-md-{% if field.field.label == 'Conteúdo' %}12{% else %}7{% endif %}">
+            <div class="col-md-{% if field == form.text_content %}12{% else %}7{% endif %}">
                 <div class="form-group {% if field.errors %}has-error{% endif %}">
                     <h4><strong>{{ field.label }}</strong></h4>
                     {% if field.errors %}
@@ -24,7 +24,7 @@
                         {% endfor %}
                     {% endif %}
                     <span class="help-block">{{ field.help_text }}</span>
-                    {% if field.field.label == 'Postar em nome da equipe' %}
+                    {% if field == form.publish_as_team %}
                     <div class="radio">
                         {{ field.0 }}
                     </div>

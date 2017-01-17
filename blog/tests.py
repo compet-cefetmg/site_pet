@@ -70,6 +70,7 @@ class PostTestCase(TestCase):
     def test_add_form_should_return_400(self):
         self.client.login(username=self.member.user.username, password='password')
         data = generate_post_form_data()
+        data.pop('thumbnail', None)
 
         for key in data:
             value = data.pop(key)

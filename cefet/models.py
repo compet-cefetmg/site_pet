@@ -39,6 +39,3 @@ class Pet(models.Model):
 
     def __str__(self):
         return self.course.__str__()
-
-    class Meta:
-        verbose_name_plural = 'PETs'

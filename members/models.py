@@ -12,8 +12,8 @@ class MemberRole(models.Model):
     verbose_name_plural = models.CharField(max_length=255, unique=True)
 
     class Meta:
-        verbose_name = 'Função do membro'
-        verbose_name_plural = 'Funções dos membros'
+        verbose_name = 'função do membro'
+        verbose_name_plural = 'funções dos membros'
 
     def __str__(self):
         return self.verbose_name.capitalize()
@@ -34,3 +34,6 @@ class Member(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'membro'

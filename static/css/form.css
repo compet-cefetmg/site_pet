@@ -9,3 +9,8 @@
 .error.help-block {
     color: #990000;
 }
+
+.forgot-password {
+    margin-top: 25px;
+    font-size: 12px;
+}

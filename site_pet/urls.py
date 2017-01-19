@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls')),
     url(r'^members/', include('members.urls')),
     url(r'^staff/', include('staff.urls')),
+    url('^', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

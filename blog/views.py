@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib import messages
+from site_pet.settings import MEDIA_ROOT
+import os
 
 
 def index(request):
@@ -43,6 +45,16 @@ def add_post(request):
         if form.is_valid():
             post = form.save()
             post.member = request.user.member
+
+            # Saves thumbnail as {{ MEDIA_ROOT }}/blog/{{ post.id }}/thumb
+            if post.thumbnail:
+                thumbnail_path = os.path.join(MEDIA_ROOT, post.thumbnail.name)
+                thumbnail_folder = os.path.join(MEDIA_ROOT, 'blog', str(post.id))
+                if not os.path.isdir(thumbnail_folder):
+                    os.mkdir(thumbnail_folder)
+                post.thumbnail.name = os.path.join('blog', str(post.id), 'thumb')
+                os.rename(thumbnail_path, os.path.join(MEDIA_ROOT, post.thumbnail.name))
+
             post.save()
 
             messages.success(request, 'Post adicionado com sucesso.')
@@ -69,6 +81,11 @@ def edit_post(request, id):
 
         if form.is_valid():
             form.save()
+
+            # Removes old thumbnail if needed
+            if not post.thumbnail.name and os.path.exists(os.path.join(MEDIA_ROOT, 'blog', str(post.id), 'thumb')):
+                os.remove(os.path.join(MEDIA_ROOT, 'blog', str(post.id), 'thumb'))
+
             messages.success(request, 'Post editado com sucesso.')
             return redirect(reverse('staff.index'))
 
@@ -87,4 +104,9 @@ def delete_post(request):
         return HttpResponseForbidden('Você só pode remover posts de seu próprio PET.')
 
     post.delete()
+
+    # Removes thumbnail
+    if os.path.exists(os.path.join(MEDIA_ROOT, 'blog', request.POST.get('id'), 'thumb')):
+        os.remove(os.path.join(MEDIA_ROOT, 'blog', request.POST.get('id'), 'thumb'))
+
     return HttpResponse()

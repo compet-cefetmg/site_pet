@@ -2,12 +2,18 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from members.models import Member
+from site_pet.settings import MEDIA_ROOT
 import os
 import datetime
 
 
 def get_image_path(instance, filename):
-    return 'blog/' + filename.split('/')[-1]
+    if instance.id:
+        thumbnail_path = os.path.join('blog', str(instance.id), 'thumb')
+        if os.path.exists(os.path.join(MEDIA_ROOT, thumbnail_path)):
+            os.remove(os.path.join(MEDIA_ROOT, thumbnail_path))
+        return thumbnail_path
+    return os.path.join('blog', filename)
 
 
 class Post(models.Model):

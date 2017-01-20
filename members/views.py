@@ -108,14 +108,14 @@ def edit_personal_info(request):
             try:
                 member.user.email = form.cleaned_data['email']
                 member.name = form.cleaned_data['name']
-
+                
                 if form.cleaned_data['facebook_link']:
                     member.facebook_link = form.cleaned_data['facebook_link']
                 if form.cleaned_data['lattes_link']:
                     member.lattes_link = form.cleaned_data['lattes_link']
                 if form.cleaned_data['photo']:
-                    photo.name = user.username
-                    member.photo = photo = form.cleaned_data['photo']
+                    member.photo.name = member.user.username
+                    member.photo = form.cleaned_data['photo']
 
                 member.user.save()
                 member.save()

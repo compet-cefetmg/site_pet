@@ -61,8 +61,11 @@ class PersonalInfoForm(forms.Form):
 
     def clean_email(self):
         data = self.cleaned_data['email']
-        if User.objects.filter(email=data).exists() and self.data['old_email'] != data:
-            raise ValidationError('E-mail já cadastrado.')
+        try:
+            if User.objects.filter(email=data).exists() and self.data['old_email'] != data:
+                raise ValidationError('E-mail já cadastrado.')
+        except KeyError:
+            raise ValidationError('Algo deu errado ao salvar seu e-mail. Por favor, tente novamente.')
         return data    
 
 

@@ -30,6 +30,8 @@ class Member(models.Model):
     photo = models.ImageField('Foto', max_length=255, upload_to=get_image_path, blank=True)
     facebook_link = models.CharField('Link do Facebook', max_length=255, blank=True)
     lattes_link = models.CharField('Link do Lattes', max_length=255, blank=True)
+    start_date = models.DateField('Data de entrada no PET', null=True, blank=True)
+    leave_date = models.DateField('Data de saída do PET', null=True, blank=True)
     role = models.ForeignKey(MemberRole, on_delete=models.PROTECT, related_name='members', verbose_name='Função')
 
     def __str__(self):

@@ -108,11 +108,15 @@ def edit_personal_info(request):
             try:
                 member.user.email = form.cleaned_data['email']
                 member.name = form.cleaned_data['name']
-                
+
                 if form.cleaned_data['facebook_link']:
                     member.facebook_link = form.cleaned_data['facebook_link']
                 if form.cleaned_data['lattes_link']:
                     member.lattes_link = form.cleaned_data['lattes_link']
+                if form.cleaned_data['start_date']:
+                    member.start_date = form.cleaned_data['start_date']
+                if form.cleaned_data['leave_date']:
+                    member.leave_date = form.cleaned_data['leave_date']
                 if form.cleaned_data['photo']:
                     member.photo.name = member.user.username
                     member.photo = form.cleaned_data['photo']
@@ -128,7 +132,7 @@ def edit_personal_info(request):
         return render(request, 'members/edit_personal_info.html', {'form': form}, status=400)
 
     form = PersonalInfoForm(initial={'name': member.name, 'email': member.user.email, 'old_email': member.user.email,
-                                   'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo})
+                                     'facebook_link': member.facebook_link, 'lattes_link': member.lattes_link, 'photo': member.photo, 'start_date': member.start_date, 'leave_date': member.leave_date})
     return render(request, 'members/edit_personal_info.html', {'form': form})
 
 
@@ -138,11 +142,11 @@ def edit_member(request, username):
     member = get_object_or_404(User, username=username).member
 
     if request.user.member.role.name == 'admin':
-        
+
         if member.role.name != 'tutor':
             messages.error(request, '{0} não é um tutor. Não é possível alterar suas informações'.format(username))
             return redirect(reverse('staff.index'))
-        
+
         if request.method == 'POST':
             form = EditTutorForm(request.POST)
 
@@ -154,14 +158,14 @@ def edit_member(request, username):
 
                 messages.success(request, 'Informações atualizadas com sucesso.')
                 return redirect(reverse('staff.index'))
-            
+
             return render(request, 'members/edit_tutor.html', {'form': form}, status=400)
-        
+
         form = EditTutorForm(initial={'pet': member.pet, 'is_active': member.user.is_active})
         return render(request, 'members/edit_tutor.html', {'form': form})
 
     if request.user.member.role.name == 'tutor':
-        
+
         if member.role.name == 'admin' or member.pet != request.user.member.pet:
             messages.error(request, 'Você não possui permissão para alterar os dados de {0}'.format(username))
             return redirect(reverse('staff.index'))
@@ -177,7 +181,7 @@ def edit_member(request, username):
 
                 messages.success(request, 'Informações atualizadas com sucesso.')
                 return redirect(reverse('staff.index'))
-            
+
             return render(request, 'members/edit_member.html', {'form': form}, status=400)
 
         form = MemberRoleForm(initial={'role': member.role})

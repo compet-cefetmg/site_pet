@@ -32,17 +32,17 @@ class MemberForm(forms.Form):
 
 class NewMemberForm(MemberForm):
     role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={
-                             'class': 'form-control'}), queryset=MemberRole.objects.exclude(name='admin').all())
+        'class': 'form-control'}), queryset=MemberRole.objects.exclude(name='admin').all())
 
 
 class TutorForm(MemberForm):
     pet = forms.ModelChoiceField(label='PET', widget=forms.Select(attrs={
-                            'class': 'form-control'}), queryset=Pet.objects.all())
+        'class': 'form-control'}), queryset=Pet.objects.all())
 
 
 class EditTutorForm(forms.Form):
     pet = forms.ModelChoiceField(label='PET', widget=forms.Select(attrs={
-                            'class': 'form-control'}), queryset=Pet.objects.all())
+        'class': 'form-control'}), queryset=Pet.objects.all())
     is_active = forms.BooleanField(label='Tutor ativo', required=False)
 
 
@@ -56,6 +56,10 @@ class PersonalInfoForm(forms.Form):
         attrs={'class': 'form-control'}), required=False)
     lattes_link = forms.CharField(label='Link do Lattes', widget=forms.TextInput(
         attrs={'class': 'form-control'}), required=False)
+    start_date = forms.DateField(label='Data de entrada no PET', widget=forms.DateInput(
+        attrs={'class': 'form-control', 'data-inputmask': '99/99/9999'}), required=False)
+    leave_date = forms.DateField(label='Data de saída do PET', widget=forms.DateInput(
+        attrs={'class': 'form-control'}), required=False, help_text='Deixa em branco se ainda fizer parte do PET.')
     old_email = forms.EmailField(
         widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
 
@@ -66,9 +70,16 @@ class PersonalInfoForm(forms.Form):
                 raise ValidationError('E-mail já cadastrado.')
         except KeyError:
             raise ValidationError('Algo deu errado ao salvar seu e-mail. Por favor, tente novamente.')
-        return data    
+        return data
+
+    def clean_leave_date(self):
+        if self.cleaned_data['leave_date'] and not self.cleaned_data['start_date']:
+            raise ValidationError('Você não pode definir uma data de saída sem definir uma data de entrada.')
+        if self.cleaned_data['leave_date'] and self.cleaned_data['leave_date'] <= self.cleaned_data['start_date']:
+            raise ValidationError('Sua data de saída não pode ser anterior a sua data de entrada.')
+        return self.cleaned_data['leave_date']
 
 
 class MemberRoleForm(forms.Form):
-    role = forms.ModelChoiceField(label='Função', widget=forms.Select(attrs={'class': 'form-control'}), queryset=MemberRole.objects.exclude(name='admin').all())
-
+    role = forms.ModelChoiceField(label='Função', widget=forms.Select(
+        attrs={'class': 'form-control'}), queryset=MemberRole.objects.exclude(name='admin').all())

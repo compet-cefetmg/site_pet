@@ -38,6 +38,9 @@
                         <li><a href="{% url 'members.index' %}{% if request.GET.pet %}?pet={{ request.GET.pet }}{% endif %}">Membros</a></li>
                     </ul>  
                     <ul class="nav navbar-nav navbar-right">
+                        {% if user.member and user.member.role.name == 'admin' %}
+                        <li><a href="{% url 'staff.send_admin_message' %}">Enviar mensagem</a></li>
+                        {% endif %}
                         {% if user.is_authenticated %}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.get_username }}<span class="caret"></span></a>

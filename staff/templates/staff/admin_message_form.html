@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 page-header">
+            <h2>Enviar mensagem</h2>
+            <p>A mensagem será enviada para o e-mail que o membro utilizou para seu cadastro no site.</p>
+        </div>
+        <div class="col-md-7">
+            {% include "messages.html" %}
+        </div>
+        <div class="col-md-7">
+            <div class="loading">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <h4>Estamos enviando os e-mails...</h4>
+                <p>Não feche a página!</p>
+            </div>
+            <form action="{% url 'staff.send_admin_message' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <h4><strong>{{ field.label }}<strong></h4>
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        <span class="help-block">{{ field.help_text }}</span>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/pt-BR.js"></script>
+<script src="{{ STATIC_URL }}js/staff/admin_message_form.js"></script>
+{% endblock js %}

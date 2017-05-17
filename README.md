@@ -20,7 +20,7 @@ pip install -r requirements.txt
 ```
 
 ### Variáveis de ambiente
-Adicione a variável de ambiente `DATABASE_URL` ao arquivo `~/.virtualenvs/site-pet/bin/activate`, substituindo pelas informações da sua conexão ao banco de dados. Exemplo:
+Adicione a variável de ambiente `DATABASE_URL` ao arquivo `~/.virtualenvs/site-pet/bin/activate`, substituindo pelas informações da sua conexão ao banco de dados.
 ```
 export DATABASE_URL='mysql://<user>:<password>@localhost:3306/<database>'
 ```

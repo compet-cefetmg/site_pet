@@ -8,7 +8,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'secret-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
+# DEBUG = False
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -16,6 +19,7 @@ INSTALLED_APPS = [
     'cefet',
     'members',
     'staff',
+	'events',
     'django_nose',
     'django_summernote',
     'sorl.thumbnail',

@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^members/', include('members.urls')),
     url(r'^staff/', include('staff.urls')),
     url('^', include('django.contrib.auth.urls')),
+	url(r'^events/', include('events.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

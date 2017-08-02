@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/events.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+{% endblock %}
+
+{% block content %}
+
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<h1>Adicionar novo evento</h1>
+
+		<h2>Dados do evento</h2>
+
+		<form action="{% url 'events:add' %}" method="post">
+		{% csrf_token %}
+			{% for field in form %}
+				<div class="form-group {% if field.errors %}has-error{% endif %}">
+					<h4><strong>{{ field.label }}<strong></h4>
+					{% if field.errors %}
+						{% for error in field.errors %}
+							<span class="help-block">{{ error }}</span>
+						{% endfor %}
+					{% endif %}
+					{{ field }}
+				</div>
+			{% endfor %}
+			<button class="btn btn-primary">Salvar</button>
+		</form>
+
+	<a href="{% url 'events:index' %}">{{ "Cancelar" }}</a>
+
+{% endblock %}

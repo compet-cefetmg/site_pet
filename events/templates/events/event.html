@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/events.css">
+{% endblock %}
+
+{% block content %}
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<h1>{{event.name}}</h1>
+
+		<p><a href="{% url 'events:pendingSpecific' event.name %}">{{ "Inscrições pendentes" }}</a>
+		&emsp;<a href="{% url 'events:edit' event.name %}">{{ "Editar" }}</a></p>
+
+		<form action="{% url 'events:event' event.name %}" method="post">
+		{% csrf_token %}
+			<input type="submit" name="delete" value="Deletar" />
+		</form>
+
+		<h2>{{event.date}}</h2>
+
+				{% if event.beginTime and event.endTime %}
+					<p>de {{event.beginTime}} às {{event.endTime}}</p>
+				{% elif event.beginTime %}
+					<p>às {{event.beginTime}}</p>
+				{% endif %}
+
+			<p>
+				{% if event.description %}
+					{{event.description}}
+				{% else %}
+					<i>Nenhuma descrição disponível.</i>
+				{% endif %}
+			</p>
+
+			{% if event.address %} <p>Local: {{event.address}}</p>{% endif %}
+
+			{% if confirmed %}
+				<h3>Confirmados:</h3>
+				<ul>
+					{% for spectator in confirmed %}
+						<li><b>{{spectator.name}}</b>
+							{%if spectator.occupation%} - {{spectator.occupation}}{%endif%}<br>
+							{%if spectator.isFromCEFET%}Matrícula: {{spectator.enrollNum}}
+							{%else%}<i>Não faz parte do CEFET.</i>{%endif%}<br>
+							Email: {{spectator.email}}<br>
+							CPF: {{spectator.cpf}}<br>
+							Data da inscrição: {{spectator.date}}</label><br/></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<p><i>Nenhuma inscrição confirmada.</i></p>
+			{% endif %}
+
+	<a href="{% url 'events:subscribe' event.name %}">{{ "Inscrever-se" }}</a>
+	&emsp;<a href="{% url 'events:index' %}">{{ "Ver todos os eventos" }}</a>
+{% endblock %}

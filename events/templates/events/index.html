@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/events.css">
+{% endblock %}
+
+{% block content %}
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<h1>{% if onlyFuture %}Próximos{% else %}Todos os{% endif %} eventos</h1>
+
+		<p><a href="{% url 'events:pending' %}">{{ "Inscrições pendentes" }}</a></p>
+
+		{% if onlyFuture %}
+			<p><a href="{% url 'events:allEvents' %}">{{ "Visualizar todos" }}</a>
+		{% else %}
+			<p><a href="{% url 'events:index' %}">{{ "Visualizar eventos futuros" }}</a>
+		{% endif %}
+
+		&emsp;<a href="{% url 'events:add' %}">{{ "Adicionar evento" }}</a></p>
+
+		{% if eventsList %}
+			<ul>
+			{% for event in eventsList %}
+				<li><a href="{% url 'events:event' event.name %}">{{ event.name }}</a> - {{ event.date }}</li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>Nenhum evento encontrado.</p>
+		{% endif %}
+{% endblock %}

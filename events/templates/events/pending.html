@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/events.css">
+{% endblock %}
+
+{% block content %}
+	{% if error_message %} <p> <strong>{{ error_message }}</strong> </p> {% endif %}
+
+	<h1>Inscrições pendentes{% if event %} em {{ event.name }}{% endif %}</h1>
+
+		{% if event %}
+			<p><a href="{% url 'events:event' event.name %}">{{ "Voltar para o evento" }}</a></p>
+		{% else %}
+			<p><a href="{% url 'events:index' %}">{{ "Ver todos os eventos" }}</a></p>
+		{% endif %}
+
+		{% if pendingList %}
+			{% if event %} 	<form action="{% url 'events:pendingSpecific' event.name %}" method="post">
+			{% else %}		<form action="{% url 'events:pending' %}" method="post"> {% endif %}
+			{% csrf_token %}
+				{% for spectator in pendingList %}
+					<p>
+						<input type="checkbox" name="selected" value="{{spectator}}" id="{{spectator}}"/>
+						<label for="{{spectator}}">{{spectator.name}}
+							{% if spectator.occupation %} - {{spectator.occupation}}{%endif%}<br>
+							{% if not event %}&emsp; Evento: {{spectator.event}}<br>{% endif %}
+							&emsp; Email: {{spectator.email}}<br>
+							&emsp; CPF: {{spectator.cpf}}<br>
+							&emsp; Data da solicitação: {{spectator.date}}</label><br/>
+					</p>
+				{% endfor %}
+				<input type="submit" name="exclude" value="Excluir">
+				<input type="submit" name="approve" value="Aprovar">
+			</form>
+
+		{% else %}
+			<p><i>Nenhuma inscrição pendente{% if event %} para esse evento{% endif %}.</i></p>
+		{% endif %}
+{% endblock %}

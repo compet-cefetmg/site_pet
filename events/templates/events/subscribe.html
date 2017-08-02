@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/events.css">
+{% endblock %}
+
+{% block content %}
+	{% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
+
+	<h1>Inscrição</h1>
+
+		<h2>{{ event.name }}</h2>
+		<p>{{ event.date }}</p>
+		<p>{{ event.address }}</p>
+		{% if event.beginTime and event.endTime %}
+			<p>de {{event.beginTime}} às {{event.endTime}}</p>
+		{% elif event.beginTime %}
+			<p>às {{event.beginTime}}</p>
+		{% endif %}
+
+		<h2>Dados da inscrição</h2>
+
+		<form action="{% url 'events:subscribe' event.name %}" method="post">
+		{% csrf_token %}
+
+			<p><label for="name">Nome completo:</label><br>
+				<input type="text" name="name" maxlength="100" required autofocus id="name"/></p>
+
+			<p><label for="email">Email:</label><br>
+				<input type="email" name="email" required id="email"/></p>
+
+			<p><label for="cpf">CPF:</label><br>
+				<input type="text" name="cpf" maxlength="11" pattern="[0-9]{11}" required id="cpf"/></p>
+
+			<p><input type="checkbox" name="fromCEFET" value="yes" id="yes"/>Faço parte do CEFET.</p>
+
+			<p><label for="enrollNum">Número de matrícula:</label><br>
+				<input type="text" name="enrollNum" maxlength="12" pattern="[0-9]{12}" required id="enrollNum"/></p>
+
+			<p><label for="occupation">Ocupação:</label><br>
+				<input type="text" name="occupation" maxlength="80" id="occupation"/></p>
+
+			<input type="reset" value="Resetar">
+			<input type="submit" value="Concluir"/>
+
+		</form>
+
+	<!-- <a href="{% url 'events:event' event.name %}">{{ "Concluir" }}</a>  &emsp; -->
+	<a href="{% url 'events:event' event.name %}">{{ "Cancelar" }}</a>
+{% endblock %}

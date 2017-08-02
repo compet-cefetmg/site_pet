@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/events.css">
+{% endblock %}
+
+{% block content %}
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+	<h1>Editar evento</h1>
+
+		<h2>Dados do evento</h2>
+
+		<form action="{% url 'events:edit' event.name %}" method="post">
+		{% csrf_token %}
+
+			<p><label for="name">Nome:</label><br>
+				<input type="text" name="name" maxlength="80" placeholder={{event.name}} autofocus id="name"/></p>
+
+			<p><label for="date">Data:</label><br>
+				<input type="date" name="date" id="date"/></p>
+
+			<p>Horário do evento:<br>
+				<label for="beginTime">Início:</label>
+				<input type="time" name="beginTime" id="beginTime"/><br>
+
+				<label for="endTime">Término:</label>
+				<input type="time" name="endTime" id="endTime"/>
+			</p>
+
+			<p><label for="description">Descrição:</label><br>
+				<input type="text" name="description" maxlength="1000" style="height:75px;" placeholder={{event.description}} id="description"/></p>
+
+			<p><label for="address">Endereço:</label><br>
+				<input type="text" name="address" maxlength="250" placeholder={{event.address}} id="address"/></p>
+
+			<input type="reset" value="Resetar">
+			<input type="submit" value="Concluir"/>
+
+		</form>
+
+	<a href="{% url 'events:event' event.name %}">{{ "Cancelar" }}</a>
+{% endblock %}

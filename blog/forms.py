@@ -16,6 +16,9 @@ class PostForm(ModelForm):
             'text_call': forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 100px;'}),
             'text_content': SummernoteWidget(),
         }
+        labels = {
+            'thumbnail' : 'Imagem'
+        }
         help_texts = {
             'text_call': 'A descrição do post será exibida na página inicial.',
             'publish_as_team': 'Ao postar em nome da equipe, a autoria do post será atribuida ao PET. Ainda será possível saber qual membro criou o post.',

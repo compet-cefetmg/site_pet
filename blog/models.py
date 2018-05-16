@@ -22,9 +22,10 @@ class Post(models.Model):
     text_call = models.CharField('Descrição', max_length=255)
     text_content = models.TextField('Conteúdo', )
     thumbnail = models.ImageField('Thumbnail', upload_to=get_image_path, null=True, blank=True)
-    publish_date = models.DateField(auto_now=False, auto_now_add=True)
-    last_modification = models.DateField(auto_now=True, auto_now_add=False)
+    publish_date = models.DateTimeField(auto_now=False, auto_now_add=True)
+    last_modification = models.DateTimeField(auto_now=True, auto_now_add=False)
     publish_as_team = models.BooleanField('Postar em nome da equipe', default=False)
+    definitive = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
         return self.title

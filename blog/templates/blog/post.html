@@ -1,19 +1,63 @@
 {% extends "base.html" %}
 
+<!-- {% block title %}Posts | {{block.super}}{% endblock %} -->
+
 {% block css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/blog.css">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/post.css">
+{% endblock %}
+
+{% block js %}
+<script src="{{ STATIC_URL }}js/blog/doc_generator.js"></script>
 {% endblock %}
 
 {% block content %}
-{% include "navpills.html" %}
-<div class="container post">
-    <div class="row">
-        <div class="col-md-8">
-            <h2>{{ post.title }}</h2>
-            <p class="info">Postado por {% if post.publish_as_team %}Equipe PET{% else %}{{ post.member.name }}{% endif %} em {{ post.publish_date|date:"d M Y" }}</p>
-            {{ post.text_content|safe }}
+
+<div class="container">
+        <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1><strong>{%if preview%}PRÉVIA - {%endif%}{{post.title}}</strong></h1>
+                    <p><small>Postado por {% if post.publish_as_team %}Equipe PET{% else %}{{ post.member.name }}{% endif %} em {{ post.publish_date|date:"d M Y" }}</small>{% if user.is_authenticated %}<a href="{% url 'blog.edit_post' id=post.id prev=0%}"><small class="text-primary"> (editar post)</small></a>{% endif %}</p>{% if user.is_authenticated %}<a href="{% url 'blog.report' id=post.id %}"><small>(gerar relatório)</small></a>{% endif %}
+                    <hr>
+                    <p class="lead">{{ post.text_call }}</p>
+                    <img src="{{ MEDIA_URL }}{{ post.thumbnail }}" class="img-responsive">
+                    <div class="crop">
+                    </div><hr>
+                    <p class="lead">{{post.text_content|safe}}</p>
+                    {%if preview%}
+                        <form id="form" action="." method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <p><h2>Confirmar post</h2></p>
+                            <input type="submit" name="addposttodb" value="Adicionar" class="btn btn-primary">
+                            <input type="submit" name="edtposttodb" value="Editar" class="btn btn-primary">
+                            <input type="submit" name="remposttodb" value="remover" class="btn btn-primary">
+                        </form>
+                    {%endif%}
+                </div>
+                <h1><strong>Outras postagens</strong></h1>
+                <div class="col-md-4">
+                    <div class="row">
+                    {% for pst in posts %}
+                    {% if pst != post %}
+                        <div class="col-md-12">
+                            <div class="card card-inverse" style="background-color:#333; border-color: #333;">
+                              <div class="card-block">
+                                <h3 class="card-title">{{ pst.title }}</h3>
+                                <p class="card-text">{{ pst.text_call }}</p>
+                                <a href="{% url 'blog.post' id=pst.id %}?pet={{ pst.member.pet.id }}" class="btn btn-primary">Ver</a>
+                              </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+        </div>
 </div>
 {% endblock %}
+
 

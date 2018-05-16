@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ STATIC_URL }}js/datatables/datatables.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+    	<div class="col-md-12">
+			{% if error_message %} <p> <strong>{{ error_message }}</strong> </p> {% endif %}
+
+			<h1>Inscrições pendentes{% if event %} em {{ event.name }}{% endif %}</h1>
+			<div class="pull-right">
+				<div class="pull-right">
+						
+						<form style="display:inline-block;" action="{% url 'events:allEvents' %}">
+							<button class="btn btn-primary">Visualizar todos</button>
+						</form>
+						
+						<form style="display:inline-block;" action="{% url 'events:index' %}">
+							<button class="btn btn-primary">Visualizar eventos futuros</button>
+						</form>
+						{% if event %}
+						<form style="display: inline-block;" action="{% url 'events:event' slug=event.slug %}">
+							<button class="btn btn-primary">Voltar para o evento</button>
+						</form>
+						{% endif %}
+				</div>
+
+			</div>
+			<div style="margin-top: 2cm;">
+			<table class="table-custom table-bordered table-striped">
+				<thead>
+					<th>Data da solicitação</th>
+	            	<th>Nome</th>
+	            	{% if not event %}
+	            	<th>Evento</th>
+	            	{% endif %}
+	            	<th>E-mail</th>
+	            	<th>Instituição de Origem</th>
+	            	{% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+	            	<th>CPF</th>
+	            	<th>Opções</th>
+	            	{% endif %}
+	            </thead>
+	            <tbody>
+					{% for spectator in pendingList %}
+	                	<tr>
+	                		<td>{{spectator.date}}</td>
+	                		<td>{{spectator.name}} {% if spectator.occupation %} - {{spectator.occupation}}{%endif%}</td>
+	                		{% if not event %}
+	                		<td>{{spectator.event.name}}</td>
+	                		{% endif %}
+	                		<td>{{spectator.email}}</td>
+	                		<td>{% if spectator.isFromCEFET %} CEFET-MG {% else %} ----- {% endif %}</td>
+	                		{% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+	                		<td>{{spectator.cpf}}</td>
+	                		<td
+	                			<div style="text-align: center; vertical-align: center;">
+	                                <a href="{% url 'events:pendingAutorize' id=spectator.id slug=spectator.event.slug%}"><span style='color:green;' title="Autorizar" class="glyphicon glyphicon-ok-circle"></span></a>    
+
+	                                <a href="{% url 'events:pendingRemove' id=spectator.id slug=spectator.event.slug%}"><span style='color:red;' title="Deletar" class="glyphicon glyphicon-trash"></span></a>
+	                            </div>
+	                		</td>
+	                		{% endif %}
+	                	</tr>
+	                {% endfor %}
+	            </tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

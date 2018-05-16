@@ -1,8 +1,23 @@
 {% extends "base.html" %}
 
-{% block css %}
+{% block cs/s %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/blog.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/form.css">
+{% endblock %}
+
+{% block links %}
+{{block.super}}
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+<!--<link rel="stylesheet" href="{{ STATIC_URL }}js/datepicker/jquery-ui.css" />-->
+{% endblock %}
+
+{%block js_includes%}
+{{block.super}}
+<script src="{{ STATIC_URL }}js/datepicker/datepicker.js"></script>
+<script src="{{ STATIC_URL }}js/masks/jsmasks.js"></script>
+<!-- <script src="{{ STATIC_URL }}js/timepicker/timepicker.js"></script> -->
+<!--<script src="{{ STATIC_URL }}js/datepicker/jquery-1.8.2.js"></script>-->
+<!--<script src="{{ STATIC_URL }}js/datepicker/jquery-ui.js"></script>-->
 {% endblock %}
 
 {% block content %}
@@ -10,38 +25,54 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 page-header">
-            <h2>{{ title }} - {{ request.user.member.pet }}</h2>
+            <h2>Formulário - {{ title }} </h2>
+            <p><small>{{ text }}</small></p>
         </div>
-        <form action="{{ action }}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="col-md-{% if field == form.text_content %}12{% else %}7{% endif %}">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
+        <div>
+            <form id="form" action="{{ action }}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                <div class="col-md-{% if field == form.text_content %}12{% else %}7{% endif %}">
                     <h4><strong>{{ field.label }}</strong></h4>
-                    {% if field.errors %}
-                        {% for error in field.errors %}
-                            <span class="help-block">{{ error }}</span>
-                        {% endfor %}
-                    {% endif %}
                     <span class="help-block">{{ field.help_text }}</span>
-                    {% if field == form.publish_as_team %}
-                    <div class="radio">
-                        {{ field.0 }}
+                    <div class="form-group {%if field.errors%} has-error {%endif%}">
+
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+
+
+                        {% if field.field.widget.attrs.class == 'radio' %}
+                            {% for radio in field%}
+                            <label class="radio-inline">
+                              <span class="radio">{{ radio.tag }}</span>
+                                {{ radio.choice_label }}
+                            </label>
+                            {% endfor %}
+                        {% elif field.field.widget.attrs.class == 'datepicker' %}
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                {{ field }}
+                            </div>
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
                     </div>
-                    <div class="radio">
-                        {{ field.1 }}
-                    </div>
-                    {% else %}
-                        {{ field }}
-                    {% endif %}
                 </div>
-            </div>
-            {% endfor %}
-            <div class="col-md-12">
-                <button class="btn btn-primary">Salvar</button>
-            </div>
-        </form>
+                {% endfor %}
+                <div class="col-md-12">
+                {% include "snippets/popup.html" %}
+                <button onclick="showDialog()" type="button" data-dismiss="modal" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
-

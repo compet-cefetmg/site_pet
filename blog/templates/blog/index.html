@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-{% include "navpills.html" %}
 <div class="container posts">
     <div class="col-md-12">
         <div class="page-header">
@@ -17,7 +16,7 @@
         <div class="col-md-11 col-sm-12">
             <div class="panel-body">
                 <div class="col-sm-5 col-xs-12">
-                    <a href="{% url 'blog.post' id=post.id %}?pet={{ post.member.pet.id }}" class="hidden-xs">
+                    <a href="{%if not prev%}{% url 'blog.post' id=post.id %}{%else%}{% url 'blog.preview' id=post.id %}{%endif%}?pet={{ post.member.pet.id }}" class="hidden-xs">
                         <img class="img-responsive" src="{{ MEDIA_URL }}{{ post.thumbnail }}">
                     </a>
                 </div>
@@ -25,7 +24,7 @@
                     {% if not request.GET.pet %}
                         <span>{{ post.member.pet }}</span>
                     {% endif %}
-                    <a href="{% url 'blog.post' id=post.id %}?pet={{ post.user }}">
+                    <a href="{%if not prev%}{% url 'blog.post' id=post.id %}{%else%}{% url 'blog.preview' id=post.id %}{%endif%}?pet={{ post.user }}">
                         <h3>{{ post.title }}</h3>
                     </a>
                     <small>Por {% if post.publish_as_team %}Equipe PET{% else %}{{ post.member.name }}{% endif %} - {{ post.publish_date }}</small>

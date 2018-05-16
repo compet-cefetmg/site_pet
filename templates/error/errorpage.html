@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{%block title%}{{err}} - {{title}}{%endblock%}
+
+{%block navbar%}{%endblock%}
+{%block messages%}{%endblock%}
+{%block navpills%}{%endblock%}
+
+{% block css %}
+<link rel="stylesheet" href="{{STATIC_URL}}css/error.css">
+{% endblock %}
+
+{% block content %}
+{% block wallpaper %}
+<body id="bg" style='background-image: url("{{STATIC_URL}}media/error.jpg")';>
+{% endblock %}
+
+<p id="rcorners6" class="centeredH"><code><a href="{% url 'blog.index' %}">Página Inicial</a></code></br><strong>error {{err}}</strong></br></p>
+
+<div class='jumbotron' class="centeredH" class="huge">
+<strong class="left">{{description}}</strong>
+<strong class="right">URL of this page: {{request.get_full_path}}</strong>
+</div>
+
+
+{% endblock %}
+
+{%block footer%}{%endblock%}

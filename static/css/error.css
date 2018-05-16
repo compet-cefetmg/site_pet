@@ -1,0 +1,39 @@
+#rcorners6 {
+    text-align: center;
+    border-radius: 15px 50px;
+    background: #b0e0e6;
+    padding: 30px; 
+    width: 200px;
+    height: 95px; 
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -100px;
+}
+
+.centeredH {
+  position: fixed;
+  left: 50%;
+  margin-left: -100px;
+  vertical-align: middle;
+}
+
+.left {
+    float: left;
+    margin-left: 100px;
+    width: 300px;
+}
+
+.right {
+    float: right;
+    margin-right: 0px;
+    width: 300px;
+}
+
+.huge {
+    font-size: 20px;
+}

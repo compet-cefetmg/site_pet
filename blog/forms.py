@@ -17,7 +17,7 @@ class PostForm(ModelForm):
             'text_content': SummernoteWidget(),
         }
         labels = {
-            'thumbnail' : 'Imagem'
+            'thumbnail': 'Imagem'
         }
         help_texts = {
             'text_call': 'A descrição do post será exibida na página inicial.',

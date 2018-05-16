@@ -1,5 +1,14 @@
+#bg{
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: cover;
+    -moz-background-size: cover;  /* Firefox 3.6 */
+    background-position: center;  /* Internet Explorer 7/8 */
+}
 html, body {
     font-family: 'Open Sans', 'Helvetica', 'sans serif';
+    height: 100%;
 }
 
 .navbar-default {
@@ -46,8 +55,32 @@ html, body {
     background-color: #3f75a2;
 }
 
-footer {
-    background-color: #e7e7e7;
-    padding: 15px;
-    color: #777;
+
+.widget{
+    cursor:pointer;  
+    font-size:13px;
+    padding-bottom:10px;
+    padding-top: 30px;
+    text-align: center;
+}
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -90px;
+}
+
+.push{
+    height: 90px
+}
+
+.footer {
+    background:#000000;
+    border-top:1px solid;
+    font-size:11px;
+    color:#777;
+    width: 100%;
+    height: 90px;
+    bottom: 0px;
 }

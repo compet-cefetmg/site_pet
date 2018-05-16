@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ STATIC_URL }}js/fullcalendar/calendario.js"></script>
+<script src="{{ STATIC_URL }}js/datatables/datatables.js"></script>
+{% endblock %}
+
+{% block content %}
+<script type=text/javascript>
+	var events = {{events|safe}}
+</script>
+<div class="container">
+        <div class="row">
+        	<div class="col-md-12">
+			{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+			<h1>{% if onlyFuture %}Próximos{% else %}Todos os{% endif %} eventos</h1>
+				<div class="pull-right">
+						{% if onlyFuture %}
+						<form style="display:inline-block;" action="{% url 'events:allEvents' %}">
+							<button class="btn btn-primary">Visualizar todos</button>
+						</form>
+						{% else %}
+						<form style="display:inline-block;" action="{% url 'events:index' %}">
+							<button class="btn btn-primary">Visualizar eventos futuros</button>
+						</form>
+						{% endif %}
+						{% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+						<form style="display:inline-block;" action="{% url 'events:pending' %}">
+							<button class="btn btn-primary">Inscrições pendentes</button>
+						</form>
+						<form style="display:inline-block;" action="{% url 'events:add' %}">
+							<button class="btn btn-primary">Adicionar evento</button>
+						</form>
+						<form style="display:inline-block;" action="{% url 'events:viewtags' %}">
+							<button class="btn btn-primary">Categorias</button>
+						</form>
+						{% endif %}
+				</div>
+				<div style="margin-top: 2cm;">
+				<table class="table-custom table-bordered table-striped">
+					<thead>
+                    	<th>Data</th>
+                    	<th>Nome</th>
+                    	<th>Local</th>
+                    	<th>Horário do início</th>
+                    	<th>Horário do final</th>
+                    </thead>
+                    <tbody>
+						{% for event in eventsList %}
+                        	<tr>
+                        		<td><a href="{% url 'events:event' slug=event.slug %}">{% if event.start_date != event.end_date %}{{event.start_date}} à {{event.end_date}} {% else %} {{event.start_date}} {% endif %}</a></td>
+                        		<td>{{event.name}}</td>
+                        		<td>{{event.address}}</td>
+                        		<td>{{event.beginTime}}</td>
+                        		<td>{{event.endTime}}</td>
+                        	</tr>
+                        {% endfor %}
+                    </tbody>
+				</table>
+				</div>
+				<div style="margin-top: 1cm;">
+				<div id="calendar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

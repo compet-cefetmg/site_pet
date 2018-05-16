@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ STATIC_URL }}js/datatables/datatables.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+    	<div class="col-md-12">
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+		<h1>{{event.name}}</h1>
+
+		<div class="pull-right">
+					<form style="display:inline-block;" action="{% url 'events:allEvents' %}">
+						<button class="btn btn-primary">Visualizar todos</button>
+					</form>
+					{% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+					<form style="display:inline-block;" action="{% url 'events:pending' %}">
+						<button class="btn btn-primary">Inscrições pendentes</button>
+					</form>
+					<form style="display:inline-block;" action="{% url 'events:edit' slug=event.slug %}">
+						<button class="btn btn-primary">Adicionar evento</button>
+					</form>
+					<p>
+					<form style="display:inline-block;" action="{% url 'events:event' slug=event.slug %}" method="post">
+					{% csrf_token %}
+						<input class="btn btn-danger" type="submit" name="delete" value="Deletar evento">
+					</form>
+					<form style="display:inline-block;" action="{% url 'events:edit' slug=event.slug %}">
+						<button class="btn btn-warning">Editar Evento</button>
+					</form>
+					{% endif %}
+					<form style="display:inline-block;" action="{% url 'events:subscribe' slug=event.slug %}">
+						<button class="btn btn-success">Inscreva-se</button>
+					</form>
+          {% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+          <form style="display:inline-block;" action="{% url 'events:generateCertificates' slug=event.slug %}">
+						<button class="btn btn-primary">Gerar Certificado</button>
+					</form>
+          {% endif %}
+					</p>
+				</div>
+		<div style="margin-top: 2cm;">
+		<h2>{% if event.start_date != event.end_date %}{{event.start_date}} à {{event.end_date}} {% else %} {{event.start_date}} {% endif %}</h2>
+
+				{% if event.beginTime and event.endTime %}
+					<p>de {{event.beginTime}} às {{event.endTime}}</p>
+				{% elif event.beginTime %}
+					<p>às {{event.beginTime}}</p>
+				{% endif %}
+
+			<p>
+				{% if event.description %}
+					{{event.description}}
+				{% else %}
+					<i>Nenhuma descrição disponível.</i>
+				{% endif %}
+			</p>
+
+			{% if event.address %} <p>Local: {{event.address}}</p>{% endif %}
+
+			<h3>Confirmados:</h3>
+
+			<table class="table-custom table-bordered table-striped">
+				<thead>
+	            	<th>Nome</th>
+	            	<th>E-mail</th>
+	            	<th>Instituição de Origem</th>
+	            	{% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+	            	<th>CPF</th>
+	            	<th>Opções</th>
+	            	{% endif %}
+	            </thead>
+	            <tbody>
+					{% for spectator in confirmed %}
+	                	<tr>
+	                		<td>{{spectator.name}} {% if spectator.occupation %} - {{spectator.occupation}}{%endif%}</td>
+	                		<td>{{spectator.email}}</td>
+	                		<td>{% if spectator.isFromCEFET %} CEFET-MG {% else %} ----- {% endif %}</td>
+	                		{% if user.member.role.verbose_name == 'Tutor' or user.is_superuser%}
+	                		<td>{{spectator.cpf}}</td>
+	                		<td>
+                                <div style="text-align: center; vertical-align: center;">
+	                                <a href="{% url 'events:pendingRemove' id=spectator.id slug=spectator.event.slug%}"><span style="color:red;" title="Bloquear" class="glyphicon glyphicon-ban-circle"></span></a>
+	                            </div>
+	                		</td>
+	                		{% endif %}
+	                	</tr>
+	                {% endfor %}
+	            </tbody>
+			</table>
+		</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

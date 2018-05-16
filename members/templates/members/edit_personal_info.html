@@ -14,9 +14,6 @@
             <p>Aqui, você pode alterar suas informações pessoais.</p>
         </div>
         <div class="col-md-7">
-            {% include "messages.html" %}
-        </div>
-        <div class="col-md-7">
             <form action="{% url 'members.edit_personal_info' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}

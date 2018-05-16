@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{%block title%}about | {{block.super}}{%endblock%}
+
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{{STATIC_URL}}css/about.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/members.css">
+{% endblock %}
+
+{% block content %}
+
+<!-- <a class="bubble-toggle" href="#">Desligar Efeitos</a> -->
+<body id="bg" style='background-image: url("{{STATIC_URL}}media/blur.jpg")';>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>O Site</h1><hr>
+            <div class="row">
+	           <div class="panel-body">
+	           O sistema foi desenvolvido pelos integrantes do Programa de Educação Tutorial (PET) de Engenharia de Computação do CEFET-MG (Campus II) usando o framework django que une html, js, css e python. Os temas de design foram feitos usando o Bootstrap, o objetivo do site é atender às demandas de todos os pets.
+	       </div>
+        </div>
+        <h1>Os Desenvolvedores</h1>
+        <!-- <div id="bubble-holder" class="holder-size"><div class="bubbles"></div></div> -->
+        <hr>
+        {% if devs %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+
+                    {% for member in devs %}
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4 col-xs-4">
+                                        {% if member.photo %}
+                                            <img src="{{ MEDIA_URL }}{{ member.photo }}" class="img-circle">
+                                        {% else %}
+                                            <img src="{{STATIC_URL}}media/defaultmemberimg.png" class="img-circle">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-offset-1 col-md-7 col-xs-8">
+                                        <h4 title="{{ member.name }}"><strong>{{ member.name }}</strong></h4>
+                                        {% if member.github_link %}
+                                        <a href="{{ member.github_link }}" target="_blank" title="GitHub">
+                                            <i class="fa fa-github" aria-hidden="true"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if member.facebook_link %}
+                                        <a href="{{ member.facebook_link }}" target="_blank" title="Facebook">
+                                            <i class="fa fa-facebook-official" aria-hidden="true"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if member.user.email %}
+                                        <a href="mailto:{{ member.user.email }}" title="{{ member.user.email }}">
+                                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if member.lattes_link %}
+                                        <a href="{{ member.lattes_link }}" target="_blank" title="Lattes">
+                                            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if member.leave_date %}
+                                        <h5>Ex-{{ member.role }}</h5>
+                                        {% else %}
+                                        <h5>{{ member.role }}</h5>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            </div>
+            </div>
+          </div>
+    </div>
+</div>
+
+{% block js %}
+<script src="{{STATIC_URL}}js/about.js"></script>
+{% endblock %}
+{% endblock %}

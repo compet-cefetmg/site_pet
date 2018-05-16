@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from factories.member_factory import *
 from django.core.files.uploadedfile import SimpleUploadedFile
 from members.forms import NewMemberForm, TutorForm, PersonalInfoForm

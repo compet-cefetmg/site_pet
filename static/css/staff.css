@@ -26,3 +26,28 @@
         margin-top: 5px;
     }
 }
+
+.glyphicon.glyphicon-ok-circle{
+	color: green;
+}
+
+.glyphicon.glyphicon-ban-circle{
+	color: orange;
+}
+
+.glyphicon.glyphicon-trash{
+	color: red;
+}
+
+td{
+	overflow-wrap: break-word;
+}
+
+th#options{
+	text-align: center;
+}
+
+table#autorized_and_not_autorized{
+	width: 100%;
+	table-layout:fixed;
+}

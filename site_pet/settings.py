@@ -1,7 +1,7 @@
 import os
 import sys
 import dj_database_url
-
+from django.conf import settings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -9,13 +9,14 @@ SECRET_KEY = 'secret-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 INSTALLED_APPS = [
     'blog',
     'cefet',
     'members',
     'staff',
+    'events',
     'django_nose',
     'django_summernote',
     'sorl.thumbnail',
@@ -25,15 +26,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    'dbbackup', 
+    'storages',# django-dbbackup
+    'django_cron',
+    ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -64,12 +67,32 @@ TEMPLATES[0]['OPTIONS']['context_processors'].append('cefet.context_processors.p
 
 WSGI_APPLICATION = 'site_pet.wsgi.application'
 
+###########################################################
+#mysql                                                    #
+###########################################################
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'site_pet', #DB_NAME
+        'USER': 'compet', #DB_USER
+        'PASSWORD': '.compet2015', #DB_PASSWORD
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
 }
 
-if 'test' in sys.argv or 'test_coverage' in sys.argv:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+###########################################################
+#sqlite3                                                  #
+###########################################################
+#DATABASES = {
+#    'default':{
+#        'ENGINE':'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR,'tmp.db.sqlite3'),
+#    } #dj_database_url.config()
+#}
+
+#if 'test' in sys.argv or 'test_coverage' in sys.argv:
+#    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -87,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'pt-br'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -114,11 +137,20 @@ SUMMERNOTE_CONFIG = {
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.getenv('EMAIL_ADDRESS')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-DEFAULT_FROM_EMAIL = os.getenv('EMAIL_ADDRESS')
-SERVER_EMAIL = os.getenv('EMAIL_ADDRESS')
+
+EMAIL_HOST = 'smtp.sendgrid.net' # adicionar as duas variaveis abaixo no arquivo (bin/activate) 
+EMAIL_HOST_USER = os.getenv('EMAIL_ADDRESS') # (Login no sendgrid) -> export EMAIL_ADDRESS = 'exemplo'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD') # (Senha do sendgrid) -> export EMAIL_PASSWORD = 'exemplo'
+EMAIL_PORT = 587
+iEMAIL_USE_TLS = True
+CRON_CLASSES = [
+    "site_pet.django-cron.Backup",
+    # ...
+]
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': 'database/'}
+
+GPG_ALWAYS_TRUST = getattr(settings, 'DBBACKUP_GPG_ALWAYS_TRUST', False)
+GPG_RECIPIENT = GPG_ALWAYS_TRUST = getattr(settings, 'DBBACKUP_GPG_RECIPIENT', None)

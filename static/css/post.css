@@ -1,0 +1,37 @@
+body {
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+p{
+	text-align: justify;
+    text-justify: inter-word;
+}
+.crop{
+	/*height: 300px;*/
+	width: 750px;
+	overflow: hidden;
+	/*border: 2px black;*/
+	/*background-color: black;*/
+}
+
+.crop img{
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	/*width: 450px;*/
+	max-width: 750px;
+}
+
+.card{
+	margin-top: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding: 7px 7px;
+	color: white;
+	border-radius: 12px;
+}

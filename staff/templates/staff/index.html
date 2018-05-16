@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/staff.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block js %}
+<script src="{{ STATIC_URL }}js/staff/admin_index.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="{{ STATIC_URL }}js/datatables/datatables.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h2>Área de administração</h2>
+                <p>Como <strong>{{paper}}</strong>, você pode {{functions}}.</p>
+            </div>
+        </div>
+        <div class="col-md-10">
+            {% for struct in vetor %}
+                <h3>{{struct.title}}</h3>
+                {% if struct.members %}
+                    <table id="autorized_and_not_autorized" class="table-custom table-bordered table-striped" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th id="id">ID</th>
+                                <th id="start">Data de entrada</th>
+                                <th id="leave">Data de saída</th>
+                                <th id="name">Nome</th>
+                                <th id="email">E-mail</th>
+                                <th id="pet">PET</th>
+                                <th id="role">Função</th>
+                                <th id="options">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in struct.members %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{member.start_date}}</td>
+                                    <td>{% if member.leave_date %} {{member.leave_date}} {% else %} ------ {% endif %}</td>
+                                    <td>{{member.name}}</td>
+                                    <td>{{member.email}}</td>
+                                    <td>{{member.pet}}</td>
+                                    <td>{{member.role.verbose_name}}</td>
+                                    <td>
+                                        <div style="text-align: center; vertical-align: center;">
+                                            {% if not struct.autorized %}
+                                                <a href="{% url 'staff.autorize_member' id=member.id autorize=True %}"><span title="Autorizar" class="glyphicon glyphicon-ok-circle"></span></a>    
+                                            {% else %}
+                                                <a href="{% url 'staff.autorize_member' id=member.id autorize=False %}"><span title="Bloquear" class="glyphicon glyphicon-ban-circle"></span></a>
+                                            {% endif %}
+                                                <a href="#"><span onclick="showDialog('Deseja excluir permanentemente o <b>{{member.role.name}}: {{member.name}}</b> do PET de {{member.pet}}?', '{% url delete_url id=member.id %}')" title="Remover" class="glyphicon glyphicon-trash"></span></a>
+                                                {% include "snippets/popup.html" %} 
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div>Não há registros</div>
+                {% endif %}
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
